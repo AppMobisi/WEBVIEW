@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import * as S from './styles'
+import { TopBar } from '../../Components/TopBar'
 
 const Home = () => {
     return(
         <>
-            <h1>OPA</h1>
+            <S.PageWrapper>
+                <TopBar />
+            </S.PageWrapper>
         </>
     )
 }
