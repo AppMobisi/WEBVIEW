@@ -11,7 +11,7 @@ const TopBar = ({userPhotoUrl}: ITopBarProps) => {
         <>
             <S.NavContainer>
                 <S.LogoImage src={logo}/>
-                <S.UserAvatar src={userPhotoUrl}/>
+                {/* <S.UserAvatar src={userPhotoUrl}/> */}
             </S.NavContainer>
         </>
     )
