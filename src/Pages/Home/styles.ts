@@ -4,6 +4,7 @@ import {Box, Button, Typography} from '@mui/material'
 
 interface ITypographyComponentProps{
     fontWeigth?: string
+    fontSize?: string
 }
 
 export const PageWrapper = styled(Box)`
@@ -31,11 +32,17 @@ export const TypographyComponent = styled(Typography)<ITypographyComponentProps>
 )
 
 export const Subtitle = styled(Typography)<ITypographyComponentProps>(
-    ({fontWeight}) => css`
+    ({fontWeight, fontSize}) => css`
         &&{
-            font-size: ${theme.typograph.fontsize.medium};
+            font-size: ${fontSize || theme.typograph.fontsize.medium};
             font-weight: ${fontWeight};
             font-family: 'Poppins';
         }
     `
 )
+
+export const CarouselContainer = styled(Box)`
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+`
