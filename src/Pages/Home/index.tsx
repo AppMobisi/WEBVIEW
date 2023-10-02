@@ -1,21 +1,23 @@
-import React, {useState, useEffect} from 'react'
 import * as S from './styles'
 import { TopBar } from '../../Components/TopBar'
 import { MenuSectionCard } from '../../Components/MenuSectionCard'
 import { LocationCard } from '../../Components/LocationCard'
+import { ProductCard } from '../../Components/ProductCard'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import classificationIcon from '../../Assets/classificationIcon.png'
 import storeIcon from '../../Assets/storeIcon.png'
 
+import { products } from './mock'
+
 const Home = () => {
-    const [userName, setUserName] = useState("Henrique")
+    const userName = "Henrique"
 
     const responsive = {
         mobile: {
           breakpoint: { max: 767, min: 0 },
-          items: 1.01 ,
+          items: 1.015 ,
           slidesToSlide: 1 // optional, default to 1.
         }
       };
@@ -100,10 +102,10 @@ const Home = () => {
                       partialVisible={false}
                       dotListClass="custom-dot-list-style"
                   >
-                      {sliderImageUrl.map((imageUrl, index) => {
+                      {products.map((product, index) => {
                       return (
-                          <div className="slider" key={index}>
-                          <img src={imageUrl.url} alt="movie" style={{ width: '300px', height: '300px' }}/>
+                          <div className="slider" key={index} style={{ padding: '0.5rem 0.8rem'}}>
+                            <ProductCard sectionName={product.section} productImg={product.img_url} productPrice={product.price}/>
                           </div>
                       );
                       })}

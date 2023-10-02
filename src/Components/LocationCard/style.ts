@@ -8,14 +8,14 @@ export interface ILocalImageProps{
 
 
 export interface ITypographyComponentProps{
-    fontWeigth?: string
+    fontPeso?: string
     fontSize?: string
 }
 
 
 export const CardContainer = styled(Box)`
     width: 90%;
-    height: 16rem;
+    height: 18rem;
     border: none;
     border-radius: 10px;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
@@ -28,7 +28,7 @@ export const LocalImage = styled(Box)<ILocalImageProps>(
     ({backUrl}) => css`
         &&{
             width: 100%;
-            height: 50%;
+            height: 55%;
             border-radius: 10px;
             background-image: url(${backUrl});
             background-size: cover;
@@ -37,10 +37,10 @@ export const LocalImage = styled(Box)<ILocalImageProps>(
 )
 
 export const Text = styled(Typography)<ITypographyComponentProps>(
-    ({fontWeight}) => css`
+    ({fontPeso}) => css`
         &&{
             font-size: ${theme.typograph.fontsize.minimum};
-            font-weight: ${fontWeight};
+            font-weight: ${fontPeso};
             font-family: 'Poppins';
             width: 100%;
         }
