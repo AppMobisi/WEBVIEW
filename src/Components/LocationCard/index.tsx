@@ -1,8 +1,7 @@
-import React from 'react'
 import * as S from './style'
 import Rating from '@mui/material/Rating';
 
-interface ILocationCardProps{
+export interface ILocationCardProps{
     imgUrl?: string
     localName?: string
     location?: string,
@@ -28,4 +27,4 @@ const LocationCard = ({imgUrl, localName, location, ratingValue}: ILocationCardP
     )
 }
 
-export {ILocationCardProps, LocationCard}
+export {LocationCard}
