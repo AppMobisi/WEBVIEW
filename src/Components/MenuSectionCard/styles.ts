@@ -2,6 +2,12 @@ import styled, {css} from "styled-components";
 import theme from "../../Styles/theme";
 import {Box, Typography, Button} from '@mui/material'
 
+export interface ITypographyComponentProps{
+    fontPeso?: string
+    fontSize?: string
+}
+
+
 export const Container = styled(Box)`
     width: 100%;
     height: 5rem;
@@ -19,10 +25,10 @@ export const IconImage = styled.img`
 `
 
 export const TypographyComponent = styled(Typography)<ITypographyComponentProps>(
-    ({fontWeight}) => css`
+    ({fontPeso}) => css`
         &&{
             font-size: ${theme.typograph.fontsize.body1};
-            font-weight: ${fontWeight};
+            font-weight: ${fontPeso};
             font-family: 'Poppins';
             width: 50%;
         }

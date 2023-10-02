@@ -6,8 +6,8 @@ import { ProductCard } from '../../Components/ProductCard'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-import classificationIcon from '../../Assets/classificationIcon.png'
-import storeIcon from '../../Assets/storeIcon.png'
+// import classificationIcon from '../../Assets/classificationIcon.png'
+// import storeIcon from '../../Assets/storeIcon.png'
 
 import { products } from './mock'
 
@@ -60,8 +60,10 @@ const Home = () => {
                     <S.TypographyComponent fontWeight={'600'}>Olá, {userName}</S.TypographyComponent>
                     <S.Subtitle fontWeight={'300'}>Bem-vindo(a) ao Mobisi!</S.Subtitle> 
                 </S.TitleAndSubtitleContainer>
-                <MenuSectionCard image={classificationIcon} text='Avaliações'/>
-                <MenuSectionCard image={storeIcon} text='Loja'/>
+                {/* <MenuSectionCard image={classificationIcon} text='Avaliações'/>
+                <MenuSectionCard image={storeIcon} text='Loja'/> */}
+                <MenuSectionCard text='Avaliações'/>
+                <MenuSectionCard text='Loja'/>
                 <S.CarouselContainer>
                   <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Lugares para você:</S.Subtitle>
                   <Carousel
