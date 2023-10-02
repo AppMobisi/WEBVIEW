@@ -1,15 +1,15 @@
 import styled, {css} from 'styled-components'
 import theme from '../../Styles/theme'
-import {Box, Button, Typography} from '@mui/material'
+import {Box, Typography} from '@mui/material'
 
-interface ITypographyComponentProps{
-    fontWeigth?: string
+export interface ITypographyComponentProps{
+    fontPeso?: string
     fontSize?: string
 }
 
 export const PageWrapper = styled(Box)`
     width: 100%;
-    padding: 2rem;
+    padding: 2rem 2rem 4rem 2rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -22,20 +22,20 @@ export const TitleAndSubtitleContainer = styled(Box)`
 `
 
 export const TypographyComponent = styled(Typography)<ITypographyComponentProps>(
-    ({fontWeight}) => css`
+    ({fontPeso}) => css`
         &&{
             font-size: ${theme.typograph.fontsize.title};
-            font-weight: ${fontWeight};
+            font-weight: ${fontPeso};
             font-family: 'Poppins';
         }
     `
 )
 
 export const Subtitle = styled(Typography)<ITypographyComponentProps>(
-    ({fontWeight, fontSize}) => css`
+    ({fontPeso, fontSize}) => css`
         &&{
             font-size: ${fontSize || theme.typograph.fontsize.medium};
-            font-weight: ${fontWeight};
+            font-weight: ${fontPeso};
             font-family: 'Poppins';
         }
     `
