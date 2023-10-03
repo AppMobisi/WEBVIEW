@@ -3,15 +3,15 @@ import * as S from './styles'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export interface IMenuSecionCardProps{
-    // image?: React.ReactNode
+    image?: any
     text?: string
 }
 
-const MenuSectionCard = ({text}: IMenuSecionCardProps) => {
+const MenuSectionCard = ({text, image}: IMenuSecionCardProps) => {
     return(
         <>
             <S.Container>
-                {/* <S.IconImage src={image}/> */}
+                <S.IconImage src={image}/>
                 <S.TypographyComponent>{text}</S.TypographyComponent>
                 <S.CardButton variant='contained'>
                     <ArrowForwardIosIcon />
