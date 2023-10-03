@@ -62,6 +62,8 @@ const Home = () => {
                 </S.TitleAndSubtitleContainer>
                 <MenuSectionCard image={classificationIcon} text='Avaliações'/>
                 <MenuSectionCard image={storeIcon} text='Loja'/>
+                {/* <MenuSectionCard text='Avaliações'/>
+                <MenuSectionCard text='Loja'/> */}
                 <S.CarouselContainer>
                   <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Lugares para você:</S.Subtitle>
                   <Carousel

@@ -1,0 +1,2 @@
+buildCommand: docker build -t webview .
+startCommand: docker run -p 3000:3000 webview
