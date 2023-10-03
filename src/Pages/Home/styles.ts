@@ -9,7 +9,7 @@ export interface ITypographyComponentProps{
 
 export const PageWrapper = styled(Box)`
     width: 100%;
-    padding: 2rem 2rem 4rem 2rem;
+    padding: 2rem 2rem 8rem 2rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
