@@ -4,7 +4,7 @@ import { FavoritesCentral } from './Pages/FavoritesCentral';
 
 const AppRouter = () => {
   return (
-    <Router>
+    <Router basename='/'>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/central-favoritos" element={<FavoritesCentral />} />
