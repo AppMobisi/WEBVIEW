@@ -30,7 +30,7 @@ const Home = () => {
                     <S.TypographyComponent fontWeight={'600'}>Olá, {userName}</S.TypographyComponent>
                     <S.Subtitle fontWeight={'300'}>Bem-vindo(a) ao Mobisi!</S.Subtitle> 
                 </S.TitleAndSubtitleContainer>
-                <MenuSectionCard image={classificationIcon} text='Avaliações'/>
+                <MenuSectionCard image={classificationIcon} text='Favoritos' urlToNavigate='central-favoritos'/>
                 <MenuSectionCard image={storeIcon} text='Loja'/>
                 <S.CarouselContainer>
                   <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Lugares para você:</S.Subtitle>

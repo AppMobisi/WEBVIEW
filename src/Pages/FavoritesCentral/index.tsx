@@ -21,12 +21,17 @@ interface ILocationsProps{
 }
 
 interface IProductsProps{
-    section?: string
-    img_url?: string
-    price?: number
+    name: string
+    section: string
+    img_url: string
+    price: number
 }
 
 const FavoritesCentral = () => {
+    const [nameToSearch, setNameToSearch] = useState<string>()
+
+    const [originalFavoriteLocations, setOriginalFavoriteLocations] = useState<ILocationsProps[]>()
+    const [originalFavoriteProducts, setOriginalFavoriteProducts] = useState<IProductsProps[]>()
     const [favoriteLocations, setFavoriteLocations] = useState<ILocationsProps[]>()
     const [favoriteProducts, setFavoriteProducts] = useState<IProductsProps[]>()
     const [optionSelected, setOptionsSelected] = useState(1)
@@ -34,14 +39,47 @@ const FavoritesCentral = () => {
     useEffect(() => {
         if(sliderImageUrl?.length){
             setFavoriteLocations(sliderImageUrl)
+            setOriginalFavoriteLocations(sliderImageUrl)
         }
     }, [sliderImageUrl])
 
     useEffect(() => {
         if(products?.length){
             setFavoriteProducts(products)
+            setOriginalFavoriteProducts(products)
         }
     }, [products])
+
+    useEffect(() => {
+        if(nameToSearch?.length && optionSelected == 1){
+            let favoriteLocationsList: ILocationsProps[] = []
+
+            favoriteLocations?.map((locat) => {
+                if(locat.name.toLowerCase().includes(nameToSearch.toLowerCase())){
+                    favoriteLocationsList.push(locat)
+                }
+            })
+
+            setFavoriteLocations(favoriteLocationsList)
+        }
+
+        if(nameToSearch?.length && optionSelected == 2){
+            let favoriteProductsList: IProductsProps[] = []
+
+            favoriteProducts?.map((locat) => {
+                if(locat.name.toLowerCase().includes(nameToSearch.toLowerCase())){
+                    favoriteProductsList.push(locat)
+                }
+            })
+
+            setFavoriteProducts(favoriteProductsList)
+        }
+
+        if(nameToSearch == ''){
+            setFavoriteLocations(originalFavoriteLocations)
+            setFavoriteProducts(originalFavoriteProducts)
+        }
+    }, [nameToSearch, optionSelected])
 
     return(
         <>
@@ -49,7 +87,7 @@ const FavoritesCentral = () => {
                 <TopBar />
                 <S.TypographyComponent fontPeso={'600'} tamanho={'1.5rem'}>Bem-vindo à sua central de favoritos! Veja os {optionSelected == 1 ? "lugares" : "produtos"} que você deu destaque!</S.TypographyComponent>
                 <S.SearchContainer>
-                    <S.SearchInput placeholder='Pesquisar em meus favoritos...'/>
+                    <S.SearchInput placeholder='Pesquisar em meus favoritos...' onChange={(e) => setNameToSearch(e.target.value)}/>
                     <S.IconSearch />
                 </S.SearchContainer>
                 <FormControl>
