@@ -117,7 +117,7 @@ const Locations = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', width: '100%' }}>
                     <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>{optionSelected == 1 ? "Alimentação:" : optionSelected == 2 ? "Lazer:" : "Outros:"}</S.Subtitle>
                     <S.LocationContainer>
-                      {optionsListed.map((imageUrl, index) => {
+                      {optionsListed.map((imageUrl) => {
                         return (
                               <LocationCard 
                                 imgUrl={imageUrl.url} 
