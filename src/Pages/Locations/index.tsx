@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import * as S from './style'
+import { useNavigate } from 'react-router-dom'
 
 import { PageWrapper } from '../Home/styles'
 import { TopBar } from '../../Components/TopBar'
@@ -16,6 +17,7 @@ interface ILocationsProps{
     name: string
     endereco: string
     rating: number
+    pk_id: number
 }
 
 const Locations = () => {
@@ -32,6 +34,8 @@ const Locations = () => {
 
     const [othersLocations, setOthersLocations] = useState<ILocationsProps[]>([])
     const [originalOthersLocations, setOriginalOthersLocations] = useState<ILocationsProps[]>([])
+
+    const navigate = useNavigate()
 
     useEffect(() => {
       if(locations?.length > 0){
@@ -124,6 +128,8 @@ const Locations = () => {
                                 localName={imageUrl.name} 
                                 location={imageUrl.endereco} 
                                 ratingValue={imageUrl.rating} 
+                                key={imageUrl.pk_id}
+                                handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.pk_id}`)}
                               />
                         );
                         })}

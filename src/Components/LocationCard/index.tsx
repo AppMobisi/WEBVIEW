@@ -6,9 +6,10 @@ export interface ILocationCardProps{
     localName?: string
     location?: string,
     ratingValue?: number
+    handleClickViewMore: () => void
 }
 
-const LocationCard = ({imgUrl, localName, location, ratingValue}: ILocationCardProps) => {
+const LocationCard = ({imgUrl, localName, location, ratingValue, handleClickViewMore}: ILocationCardProps) => {
     return(
         <>
             <S.CardContainer>
@@ -18,7 +19,7 @@ const LocationCard = ({imgUrl, localName, location, ratingValue}: ILocationCardP
                     <S.Text>{location}</S.Text>
                     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Rating name="read-only" value={ratingValue} readOnly />
-                        <S.ViewMoreButton variant='contained'>Ver mais</S.ViewMoreButton>
+                        <S.ViewMoreButton variant='contained' onClick={() => handleClickViewMore()}>Ver mais</S.ViewMoreButton>
                     </div>
                 </div>
                 

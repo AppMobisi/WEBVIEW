@@ -5,6 +5,7 @@ import { LocationCard } from '../../Components/LocationCard'
 import { ProductCard } from '../../Components/ProductCard'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useNavigate } from 'react-router-dom'
 
 import classificationIcon from '../../Assets/classificationIcon.png'
 import storeIcon from '../../Assets/storeIcon.png'
@@ -13,6 +14,7 @@ import { products, sliderImageUrl } from './mock'
 
 const Home = () => {
     const userName = "Henrique"
+    const navigate = useNavigate()
 
     const responsive = {
         mobile: {
@@ -53,6 +55,7 @@ const Home = () => {
                               localName={imageUrl.name} 
                               location={imageUrl.endereco} 
                               ratingValue={imageUrl.rating} 
+                              handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.pk_id}`)}
                             />
                           </div>
                       );
