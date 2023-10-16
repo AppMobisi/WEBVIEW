@@ -12,7 +12,7 @@ export interface ITypographyComponentProps{
 }
 
 export const CardContainer = styled(Box)`
-    width: 90%;
+    width: 100%;
     height: 18rem;
     border: none;
     border-radius: 10px;

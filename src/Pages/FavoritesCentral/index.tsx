@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import * as S from './style'
+import { useNavigate } from 'react-router-dom';
 
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -18,6 +19,7 @@ interface ILocationsProps{
     name: string
     endereco: string
     rating: number
+    pk_id: number
 }
 
 interface IProductsProps{
@@ -35,6 +37,8 @@ const FavoritesCentral = () => {
     const [favoriteLocations, setFavoriteLocations] = useState<ILocationsProps[]>()
     const [favoriteProducts, setFavoriteProducts] = useState<IProductsProps[]>()
     const [optionSelected, setOptionsSelected] = useState(1)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         if(sliderImageUrl?.length){
@@ -107,7 +111,7 @@ const FavoritesCentral = () => {
                             <>
                                 {!!favoriteLocations?.length && <>
                                     {favoriteLocations.map((loc, index) => {
-                                        return(<LocationCard imgUrl={loc.url} localName={loc.name} location={loc.endereco} ratingValue={loc.rating} key={index}/>)
+                                        return(<LocationCard imgUrl={loc.url} localName={loc.name} location={loc.endereco} ratingValue={loc.rating} key={index}  handleClickViewMore={() => navigate(`/estabelecimentos/${loc.pk_id}`)}/>)
                                     })}
                             </>
                         }
