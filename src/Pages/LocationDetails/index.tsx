@@ -1,6 +1,6 @@
 import * as S from './style'
-import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+// import { useParams } from 'react-router-dom'
 
 import Fab from '@mui/material/Fab';
 import AccessibleIcon from '@mui/icons-material/Accessible';
@@ -18,15 +18,23 @@ import { TypographyComponent } from '../FavoritesCentral/style'
 const imgUrlMock = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQS82ET2bq9oTNwPOL8gqyoLoLfeqJJJWJmKQ&usqp=CAU"
 
 const LocationDetails = () => {
-    const params = useParams()
-    const locationId = params?.id
+    // const params = useParams()
+    // const locationId = params?.id
 
-    const [locationName, setLocationName] = useState<string>('Pastel do Baixinho')
-    const [locationAddress, setLocationAddress] = useState<string>('Estrada Ecoturística do Suru, Suru, Santana de Parnaíba')
-    const [locationRating, setLocationRating] = useState<number>(5)
-    const [locationPhoneNumber, setLocationPhoneNumber] = useState<string>('11 96515-6784')
-    const [locationWebsite, setLocationWebsite] = useState<string>('www.pasteldobaixinho.com.br')
+    const [locationName, setLocationName] = useState<string>()
+    const [locationAddress, setLocationAddress] = useState<string>()
+    const [locationRating, setLocationRating] = useState<number>()
+    const [locationPhoneNumber, setLocationPhoneNumber] = useState<string>()
+    const [locationWebsite, setLocationWebsite] = useState<string>()
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
+
+    useEffect(() => {
+        setLocationName('Pastel do Baixinho')
+        setLocationAddress('Estrada Ecoturística do Suru, Suru, Santana de Parnaíba')
+        setLocationRating(5)
+        setLocationPhoneNumber('11 96515-6784')
+        setLocationWebsite('www.pasteldobaixinho.com.br')
+    }, [])
 
     return(
         <>
