@@ -1,5 +1,7 @@
 import * as S from './style'
 import { useEffect, useState } from 'react'
+import { DeficiencyTypeModal } from '../../Components/DeficiencyTypeModal';
+import { useNavigate } from 'react-router-dom';
 // import { useParams } from 'react-router-dom'
 
 import Fab from '@mui/material/Fab';
@@ -28,6 +30,12 @@ const LocationDetails = () => {
     const [locationWebsite, setLocationWebsite] = useState<string>()
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
+    const [isDeficiencyModalOpen, setIsDeficiencyModalOpen] = useState<boolean>(false)
+    const [deficiencyType, setDeficiencyType] = useState<string>("")
+    const [deficiencyDescription, setDeficiencyDescription] = useState<string>("")
+
+    const navigate = useNavigate()
+
     useEffect(() => {
         setLocationName('Pastel do Baixinho')
         setLocationAddress('Estrada Ecoturística do Suru, Suru, Santana de Parnaíba')
@@ -40,6 +48,7 @@ const LocationDetails = () => {
         <>
             <S.LocationImg backUrl={imgUrlMock}/>
             <PageWrapper>
+                <S.ReturnIcon onClick={() => navigate("/")}/>
                 <S.Section1Grid>
                     <S.LocationInfoContainer>
                         <TypographyComponent fontPeso={'600'} tamanho={'1.5rem'}>{locationName}</TypographyComponent>
@@ -50,14 +59,38 @@ const LocationDetails = () => {
                         </div>
                     </S.LocationInfoContainer>
                     <S.LocationAccessContainer>
-                        <Fab color="primary" aria-label="acess">
-                            <AccessibleIcon sx={{ fontSize: '2rem' }}/>
+                        <Fab 
+                            color="primary" 
+                            aria-label="acess" 
+                            onClick={() => {
+                                setIsDeficiencyModalOpen(true)
+                                setDeficiencyType("Visual")    
+                                setDeficiencyDescription("Esse estabelecimento possui acessibilidade para deficientes visuais. Pode ter: cardápio em braile, identificação das vias de circulação e suporte com pessoas treinadas")
+                            }}
+                        >
+                            <VisibilityOffIcon sx={{ fontSize: '2rem' }}/>   
                         </Fab>
-                        <Fab color="primary" aria-label="acess">
+                        <Fab 
+                            color="primary" 
+                            aria-label="acess"
+                            onClick={() => {
+                                setIsDeficiencyModalOpen(true)
+                                setDeficiencyType("Auditiva")    
+                                setDeficiencyDescription("Esse estabelecimento possui acessibilidade para deficientes auditivos. Pode ter: atendentes treinados para interpretar libras e menor emissão de ruídos externos.")
+                            }}
+                        >
                             <HearingDisabledIcon sx={{ fontSize: '2rem' }}/>
                         </Fab>
-                        <Fab color="primary" aria-label="acess">
-                            <VisibilityOffIcon sx={{ fontSize: '2rem' }}/>
+                        <Fab 
+                            color="primary" 
+                            aria-label="acess"
+                            onClick={() => {
+                                setIsDeficiencyModalOpen(true)
+                                setDeficiencyType("Física")    
+                                setDeficiencyDescription("Esse estabelecimento possui acessibilidade para pessoas com deficiência de mobilidade. Rampas, elevadores, banheiros adaptados e calçadas planas são esperados no local.")
+                            }}
+                        >
+                            <AccessibleIcon sx={{ fontSize: '2rem' }}/>
                         </Fab>
                     </S.LocationAccessContainer>
                 </S.Section1Grid>
@@ -83,6 +116,12 @@ const LocationDetails = () => {
                     </S.AddressInfoContainer>
                 </S.LocAddressInfo>
             </PageWrapper>
+            <DeficiencyTypeModal 
+                isOpen={isDeficiencyModalOpen} 
+                handleClose={() => setIsDeficiencyModalOpen(false)} 
+                deficiencyType={`Deficiência ${deficiencyType}`} 
+                description={deficiencyDescription}
+            />
         </>
     )
 }

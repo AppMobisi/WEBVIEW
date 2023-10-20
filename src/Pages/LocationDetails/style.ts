@@ -1,5 +1,6 @@
 import styled, {css} from "styled-components";
 import { Box, Button } from "@mui/material";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 export interface ILocationImgProps{
     backUrl?: string
@@ -70,3 +71,18 @@ export const AddressInfoContainer = styled(Box)`
     gap: 1rem;
     justify-content: flex-start;
 `
+
+export const ReturnIcon = styled(ArrowBackIosNewIcon)(
+    () => css`
+        &&{
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            color: #fff;
+            z-index: 1111111;
+            font-size: 2rem;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 5px;
+        }
+    `
+)
