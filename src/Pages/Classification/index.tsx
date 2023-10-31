@@ -9,6 +9,7 @@ const Classification = () => {
 
     const GetImage = async () => {
         const image = await GetProducts(Number(id))
+        console.log(image)
     }
 
     useEffect(() => {
