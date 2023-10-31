@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import * as S from './styles'
 import { TopBar } from '../../Components/TopBar'
 import { MenuSectionCard } from '../../Components/MenuSectionCard'
@@ -6,15 +7,25 @@ import { ProductCard } from '../../Components/ProductCard'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useNavigate } from 'react-router-dom'
+import { GetProducts } from "../../Services/functions"
 
 import classificationIcon from '../../Assets/classificationIcon.png'
 import storeIcon from '../../Assets/storeIcon.png'
 
-import { products, sliderImageUrl } from './mock'
+import {sliderImageUrl } from './mock'
+
+interface IProductsListProps {
+  cFoto: string
+  cNome: string
+  nPreco: number
+}
 
 const Home = () => {
     const userName = "Henrique"
+    const userId = 1
     const navigate = useNavigate()
+
+    const [productsList, setProductsList] = useState<IProductsListProps[]>([])
 
     const responsive = {
         mobile: {
@@ -23,6 +34,21 @@ const Home = () => {
           slidesToSlide: 1 // optional, default to 1.
         }
       };
+
+      const GetImage = async () => {
+        const image = await GetProducts(Number(userId))
+        setProductsList(image?.data)
+    }
+
+    useEffect(() => {
+        GetImage()
+    }, [])
+
+    useEffect(() => {
+      if(productsList?.length){
+        console.log(productsList)
+      }
+    }, [productsList])
 
     return(
         <>
@@ -62,28 +88,29 @@ const Home = () => {
                       })}
                   </Carousel>
                 </S.CarouselContainer>
-                <S.CarouselContainer>
-                  <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Produtos:</S.Subtitle>
-                  <Carousel
-                      responsive={responsive}
-                      autoPlay={true}
-                      swipeable={true}
-                      draggable={true}
-                      showDots={false}
-                      arrows={false}
-                      infinite={true}
-                      partialVisible={false}
-                      dotListClass="custom-dot-list-style"
-                  >
-                      {products.map((product, index) => {
-                      return (
-                          <div className="slider" key={index} style={{ padding: '0.5rem 0.8rem'}}>
-                            <ProductCard sectionName={product.section} productImg={product.img_url} productPrice={product.price}/>
-                          </div>
-                      );
-                      })}
-                  </Carousel>
-                </S.CarouselContainer>
+                {productsList?.length > 0 && 
+                  <S.CarouselContainer>
+                    <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Produtos:</S.Subtitle>
+                    <Carousel
+                        responsive={responsive}
+                        autoPlay={true}
+                        swipeable={true}
+                        draggable={true}
+                        showDots={false}
+                        arrows={false}
+                        infinite={true}
+                        partialVisible={false}
+                        dotListClass="custom-dot-list-style"
+                    >
+                        {productsList.map((product, index) => {
+                        return (
+                            <div className="slider" key={index} style={{ padding: '0.5rem 0.8rem'}}>
+                              <ProductCard sectionName={product?.cNome} productImg={product.cFoto} productPrice={product.nPreco}/>
+                            </div>
+                        );
+                        })}
+                    </Carousel>
+                  </S.CarouselContainer>}
             </S.PageWrapper>
         </>
     )

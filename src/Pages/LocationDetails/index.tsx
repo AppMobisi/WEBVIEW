@@ -2,7 +2,7 @@ import * as S from './style'
 import { useEffect, useState } from 'react'
 import { DeficiencyTypeModal } from '../../Components/DeficiencyTypeModal';
 import { useNavigate } from 'react-router-dom';
-// import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import Fab from '@mui/material/Fab';
 import AccessibleIcon from '@mui/icons-material/Accessible';
@@ -20,8 +20,8 @@ import { TypographyComponent } from '../FavoritesCentral/style'
 const imgUrlMock = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQS82ET2bq9oTNwPOL8gqyoLoLfeqJJJWJmKQ&usqp=CAU"
 
 const LocationDetails = () => {
-    // const params = useParams()
-    // const locationId = params?.id
+    const params = useParams()
+    const locationId = params?.id
 
     const [locationName, setLocationName] = useState<string>()
     const [locationAddress, setLocationAddress] = useState<string>()
@@ -99,7 +99,7 @@ const LocationDetails = () => {
                         <FavoriteIcon />
                         {isFavorite ? 'Remover' : 'Favoritar'}
                     </S.LocationButton>
-                    <S.LocationButton variant='contained'>
+                    <S.LocationButton variant='contained' onClick={() => navigate(`/classificar/${locationId}`)}>
                         <GradeIcon />Avaliar
                     </S.LocationButton>
                 </S.ButtonsContainer>
