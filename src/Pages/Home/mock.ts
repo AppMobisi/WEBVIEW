@@ -51,6 +51,14 @@ const sliderImageUrl = [
         endereco: "Santana de Parnaíba",
         rating: 1.5,
         pk_id: 4
+    },
+    {
+      url:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQS82ET2bq9oTNwPOL8gqyoLoLfeqJJJWJmKQ&usqp=CAU",
+        name: "Bar do Diogolas",
+        endereco: "Santana de Parnaíba",
+        rating: 1.5,
+        pk_id: 5
     }
   ];
 
