@@ -23,8 +23,12 @@ interface IProductsListProps {
   cDescricao: string
 }
 
+declare const informacoesWeb: any;
+
 const Home = () => {
     const [userName, setUserName] = useState('')
+    const [coordX, setCoordX] = useState('')
+    const [coordY, setCoordY] = useState('')
     const userId = 1
     const navigate = useNavigate()
 
@@ -38,13 +42,16 @@ const Home = () => {
         }
       };
 
-      const getAndroidEmail = () => {
-        let nome = "";
-        if (typeof (window as any).Android !== 'undefined') {
-          nome = (window as any).Android.returnEmail();
-          setUserName(nome)
+      const getAndroidInfo = () => {
+        if(typeof informacoesWeb !== undefined) {
+          const iUsuarioId = informacoesWeb.getiUsuarioId();
+          const CoordenadaX = informacoesWeb.getCoordenadaX();
+          const CoordenadaY = informacoesWeb.getCoordenadaY();
+
+          setUserName(iUsuarioId) 
+          setCoordX(CoordenadaX)
+          setCoordY(CoordenadaY)         
         }
-        alert(nome);
       };
 
     const GetImage = async () => {
@@ -54,7 +61,7 @@ const Home = () => {
 
     useEffect(() => {
         GetImage()
-        getAndroidEmail()
+        getAndroidInfo()
     }, [])
 
     return(
@@ -63,6 +70,8 @@ const Home = () => {
                 <TopBar />
                 <S.TitleAndSubtitleContainer>
                     <S.TypographyComponent fontWeight={'600'}>Olá, {userName}</S.TypographyComponent>
+                    <S.TypographyComponent fontWeight={'600'}>Olá, {coordX}</S.TypographyComponent>
+                    <S.TypographyComponent fontWeight={'600'}>Olá, {coordY}</S.TypographyComponent>
                     <S.Subtitle fontWeight={'300'}>Bem-vindo(a) ao Mobisi!</S.Subtitle> 
                 </S.TitleAndSubtitleContainer>
                 <MenuSectionCard image={classificationIcon} text='Favoritos' urlToNavigate='central-favoritos'/>
