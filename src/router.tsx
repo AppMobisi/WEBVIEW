@@ -5,6 +5,7 @@ import { Locations } from './Pages/Locations';
 import { LocationDetails } from './Pages/LocationDetails';
 import { Classification } from './Pages/Classification';
 import { ProductDetails } from './Pages/ProductDetails';
+import { ProductsHub } from './Pages/ProductsHub';
 
 const AppRouter = () => {
   return (
@@ -16,6 +17,7 @@ const AppRouter = () => {
         <Route path="/estabelecimentos/:id" element={<LocationDetails />} />
         <Route path="/classificar/:id" element={<Classification />} />
         <Route path="/produtos/:productName/:productPrice/:productPhoto/:anuncianteId/:productDesc/:productId" element={<ProductDetails />} />
+        <Route path="/produtos" element={<ProductsHub />} />
       </Routes>
     </Router>
   );
