@@ -1,3 +1,4 @@
-const baseURL =  "https://apifirebase.onrender.com"
+const baseURLFirebase =  "https://apifirebase.onrender.com"
+const baseURLPostgres =  "https://apipostgres.onrender.com"
 
-export {baseURL};
+export {baseURLFirebase, baseURLPostgres};

@@ -16,8 +16,11 @@ import {sliderImageUrl } from './mock'
 
 interface IProductsListProps {
   cFoto: string
-  cNome: string
+  cTitulo: string
   nPreco: number
+  id: string
+  iAnuncianteId: number
+  cDescricao: string
 }
 
 const Home = () => {
@@ -35,20 +38,14 @@ const Home = () => {
         }
       };
 
-      const GetImage = async () => {
-        const image = await GetProducts(Number(userId))
-        setProductsList(image?.data)
+    const GetImage = async () => {
+      const image = await GetProducts(Number(userId))
+      setProductsList(image?.data)
     }
 
     useEffect(() => {
         GetImage()
     }, [])
-
-    useEffect(() => {
-      if(productsList?.length){
-        console.log(productsList)
-      }
-    }, [productsList])
 
     return(
         <>
@@ -105,7 +102,7 @@ const Home = () => {
                         {productsList.map((product, index) => {
                         return (
                             <div className="slider" key={index} style={{ padding: '0.5rem 0.8rem'}}>
-                              <ProductCard sectionName={product?.cNome} productImg={product.cFoto} productPrice={product.nPreco}/>
+                              <ProductCard sectionName={product?.cTitulo} productImg={product.cFoto} productPrice={product.nPreco} handleClick={() => navigate(`/produtos/${product?.cTitulo}/${product?.nPreco}/${encodeURIComponent(product?.cFoto)}/${product?.iAnuncianteId}/${product?.cDescricao}/${product?.id}`)}/>
                             </div>
                         );
                         })}
