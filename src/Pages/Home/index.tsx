@@ -44,6 +44,7 @@ const Home = () => {
 
       const getAndroidInfo = () => {
         if(typeof informacoesWeb !== undefined) {
+          alert(informacoesWeb)
           const iUsuarioId = informacoesWeb.getiUsuarioId();
           const CoordenadaX = informacoesWeb.getCoordenadaX();
           const CoordenadaY = informacoesWeb.getCoordenadaY();
