@@ -41,19 +41,6 @@ const Home = () => {
         }
       };
 
-      // const getAndroidInfo = () => {
-      //   alert(informacoesWeb)
-      //   if(typeof informacoesWeb !== null) {
-      //     const iUsuarioId = informacoesWeb.getiUsuarioId();
-      //     const CoordenadaX = informacoesWeb.getCoordenadaX();
-      //     const CoordenadaY = informacoesWeb.getCoordenadaY();
-
-      //     setUserName(iUsuarioId) 
-      //     setCoordX(CoordenadaX)
-      //     setCoordY(CoordenadaY)         
-      //   }
-      // };
-
     const GetImage = async () => {
       const image = await GetProducts(Number(userId))
       setProductsList(image?.data)
@@ -61,22 +48,38 @@ const Home = () => {
 
     useEffect(() => {
         GetImage()
-        // getAndroidInfo()
     }, [])
 
     useEffect(() => {
       if(userId){
         setUserName(userId)
+        sessionStorage.setItem('userId', String(userId))
       }
 
       if(coordenadaX){
         setCoordX(coordenadaX)
+        sessionStorage.setItem('coordX', String(coordenadaX))
       }
 
       if(coordenadaY){
         setCoordY(coordenadaY)
+        sessionStorage.setItem('coordY', String(coordenadaY))
       }
     }, [userId, coordenadaX, coordenadaY])
+
+    useEffect(() => {
+      if(sessionStorage.getItem('userID')){
+        setUserName(sessionStorage.getItem('userID'))
+      }
+
+      if(sessionStorage.getItem('coordY')){
+        setCoordY(sessionStorage.getItem('coordY'))
+      }
+
+      if(sessionStorage.getItem('coordX')){
+        setCoordX(sessionStorage.getItem('coordX'))
+      }
+    }, [sessionStorage.getItem('userID'), sessionStorage.getItem('coordY'), sessionStorage.getItem('coordX')])
 
     return(
         <>
