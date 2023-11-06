@@ -6,7 +6,7 @@ import { LocationCard } from '../../Components/LocationCard'
 import { ProductCard } from '../../Components/ProductCard'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { GetProducts } from "../../Services/functions"
 
 import classificationIcon from '../../Assets/classificationIcon.png'
@@ -23,13 +23,12 @@ interface IProductsListProps {
   cDescricao: string
 }
 
-const informacoesWeb: any = null
 
 const Home = () => {
-    const [userName, setUserName] = useState('')
-    const [coordX, setCoordX] = useState('')
-    const [coordY, setCoordY] = useState('')
-    const userId = 1
+    const {userId, coordenadaX, coordenadaY} = useParams()
+    const [userName, setUserName] = useState<any>()
+    const [coordX, setCoordX] = useState<any>()
+    const [coordY, setCoordY] = useState<any>()
     const navigate = useNavigate()
 
     const [productsList, setProductsList] = useState<IProductsListProps[]>([])
@@ -42,18 +41,18 @@ const Home = () => {
         }
       };
 
-      const getAndroidInfo = () => {
-        alert(informacoesWeb)
-        if(typeof informacoesWeb !== null) {
-          const iUsuarioId = informacoesWeb.getiUsuarioId();
-          const CoordenadaX = informacoesWeb.getCoordenadaX();
-          const CoordenadaY = informacoesWeb.getCoordenadaY();
+      // const getAndroidInfo = () => {
+      //   alert(informacoesWeb)
+      //   if(typeof informacoesWeb !== null) {
+      //     const iUsuarioId = informacoesWeb.getiUsuarioId();
+      //     const CoordenadaX = informacoesWeb.getCoordenadaX();
+      //     const CoordenadaY = informacoesWeb.getCoordenadaY();
 
-          setUserName(iUsuarioId) 
-          setCoordX(CoordenadaX)
-          setCoordY(CoordenadaY)         
-        }
-      };
+      //     setUserName(iUsuarioId) 
+      //     setCoordX(CoordenadaX)
+      //     setCoordY(CoordenadaY)         
+      //   }
+      // };
 
     const GetImage = async () => {
       const image = await GetProducts(Number(userId))
@@ -62,8 +61,22 @@ const Home = () => {
 
     useEffect(() => {
         GetImage()
-        getAndroidInfo()
+        // getAndroidInfo()
     }, [])
+
+    useEffect(() => {
+      if(userId){
+        setUserName(userId)
+      }
+
+      if(coordenadaX){
+        setCoordX(coordenadaX)
+      }
+
+      if(coordenadaY){
+        setCoordY(coordenadaY)
+      }
+    }, [userId, coordenadaX, coordenadaY])
 
     return(
         <>
