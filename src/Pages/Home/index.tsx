@@ -24,7 +24,7 @@ interface IProductsListProps {
 }
 
 const Home = () => {
-    const userName = "Henrique"
+    const [userName, setUserName] = useState('')
     const userId = 1
     const navigate = useNavigate()
 
@@ -38,6 +38,15 @@ const Home = () => {
         }
       };
 
+      const getAndroidEmail = () => {
+        let nome = "";
+        if (typeof (window as any).Android !== 'undefined') {
+          nome = (window as any).Android.returnEmail();
+          setUserName(nome)
+        }
+        alert(nome);
+      };
+
     const GetImage = async () => {
       const image = await GetProducts(Number(userId))
       setProductsList(image?.data)
@@ -45,6 +54,7 @@ const Home = () => {
 
     useEffect(() => {
         GetImage()
+        getAndroidEmail()
     }, [])
 
     return(
@@ -56,7 +66,7 @@ const Home = () => {
                     <S.Subtitle fontWeight={'300'}>Bem-vindo(a) ao Mobisi!</S.Subtitle> 
                 </S.TitleAndSubtitleContainer>
                 <MenuSectionCard image={classificationIcon} text='Favoritos' urlToNavigate='central-favoritos'/>
-                <MenuSectionCard image={storeIcon} text='Loja'/>
+                <MenuSectionCard image={storeIcon} text='Loja' urlToNavigate='produtos'/>
                 <S.CarouselContainer>
                   <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Lugares para você:</S.Subtitle>
                   <Carousel
