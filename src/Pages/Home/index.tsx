@@ -23,7 +23,7 @@ interface IProductsListProps {
   cDescricao: string
 }
 
-declare const informacoesWeb: any;
+declare const informacoesWeb: any
 
 const Home = () => {
     const [userName, setUserName] = useState('')
