@@ -23,7 +23,7 @@ interface IProductsListProps {
   cDescricao: string
 }
 
-declare const informacoesWeb: any
+const informacoesWeb: any = null
 
 const Home = () => {
     const [userName, setUserName] = useState('')
@@ -43,8 +43,8 @@ const Home = () => {
       };
 
       const getAndroidInfo = () => {
-        if(typeof informacoesWeb !== undefined) {
-          alert(informacoesWeb)
+        alert(informacoesWeb)
+        if(typeof informacoesWeb !== null) {
           const iUsuarioId = informacoesWeb.getiUsuarioId();
           const CoordenadaX = informacoesWeb.getCoordenadaX();
           const CoordenadaY = informacoesWeb.getCoordenadaY();
