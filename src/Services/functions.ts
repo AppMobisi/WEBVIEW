@@ -6,7 +6,6 @@ const GetProducts = async (userId: number) => {
         const response = await axios.get(`${baseURLFirebase}/anuncios/getAnuncios?iUsuarioId=${userId}`);
         return response?.data;
     } catch (error) {
-        console.log(error);
         return null;
     }
 }
@@ -16,7 +15,6 @@ const GetUserById = async (userId: number) => {
         const response = await axios.get(`${baseURLPostgres}/users/${userId}`)
         return response?.data
     } catch (error){
-        console.log(error)
         return null;
     }
 }
@@ -26,7 +24,6 @@ const FavoriteProduct = async (userId: number, productId: string) => {
         const response = await axios.post(`${baseURLFirebase}/favoritos/salvar`, {iUsuarioId: userId, cAnuncioId: productId})
         return response?.data
     } catch (error){
-        console.log(error)
         return null;
     }
 }
@@ -36,7 +33,6 @@ const GetFavoriteProducts = async (userId: number) => {
         const response = await axios.get(`${baseURLFirebase}/favoritos/getByUsuario/${userId}`);
         return response;
     } catch (error) {
-        console.log(error);
         return null;
     }
 }
@@ -46,7 +42,6 @@ const DeleteFavoriteProduct = async (userId: number, productId: string) => {
         const response = await axios.delete(`${baseURLFirebase}/favoritos/deletar?iUsuarioId=${userId}&cAnuncioId=${productId}`)
         return response
     } catch (error){
-        console.log(error)
         return null;
     }
 }

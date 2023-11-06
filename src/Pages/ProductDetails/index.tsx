@@ -109,10 +109,6 @@ const ProductDetails = () => {
         }
     }, [favoriteProductsList, idProduto])
 
-    useEffect(() => {
-        console.log(isFavorite)
-    }, [isFavorite])
-
     return(
         <>
             <S.LocationImg backUrl={urlPhoto} src={urlPhoto}/>
