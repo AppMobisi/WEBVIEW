@@ -1,3 +1,4 @@
-const baseURL =  "https://api.thecatapi.com/v1/images/search"
+const baseURLFirebase =  "https://apifirebase.onrender.com"
+const baseURLPostgres =  "https://apipostgres.onrender.com"
 
-export {baseURL};
+export {baseURLFirebase, baseURLPostgres};

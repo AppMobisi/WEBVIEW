@@ -19,6 +19,7 @@ export default {
       blue002: '#10284A',
       blue: '#0091ff',
       darkBlue: '#001489',
+      buttonBlue: '003D76',
       lighterBlue: '#D0DBEA',
       shadow: {
         alpha1: 'rgba(0, 0, 0, 0.1)',

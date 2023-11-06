@@ -1,114 +1,48 @@
 import styled, {css} from 'styled-components'
 import theme from '../../Styles/theme'
-import {Box, Button} from '@mui/material'
-import { TypographyComponent } from '../../Components/Typography'
-import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
-import PriorityHighOutlinedIcon from '@mui/icons-material/PriorityHighOutlined';
+import {Box, Typography} from '@mui/material'
 
-export interface ICardContainerProps{
-    gapValue?: string
+export interface ITypographyComponentProps{
+    fontPeso?: string
+    fontSize?: string
 }
 
 export const PageWrapper = styled(Box)`
     width: 100%;
-    padding: 2rem 6rem;
-    display: flex;
-    justify-content: space-between;
-`
-
-export const ContentContainer = styled(Box)`
-    width: 50%;
+    padding: 2rem 2rem 8rem 2rem;
     display: flex;
     flex-direction: column;
-    gap: 10rem;
+    gap: 2rem;
 `
 
-export const TitleContainer = styled(Box)`
+export const TitleAndSubtitleContainer = styled(Box)`
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
 `
 
-export const DesafioContainer = styled(Box)`
-    display: flex;
-    padding: 0 0;
-    flex-direction: column;
-    gap: 1.5rem;
-`
-
-export const Title = styled(TypographyComponent)(
-    () => css`
+export const TypographyComponent = styled(Typography)<ITypographyComponentProps>(
+    ({fontPeso}) => css`
         &&{
-            font-size: ${theme.typograph.fontsize.bigTitle};
-            color: ${theme.colors.font.title};
-            font-family: sans-serif;
+            font-size: ${theme.typograph.fontsize.title};
+            font-weight: ${fontPeso};
+            font-family: 'Poppins';
         }
     `
 )
 
-export const SubTitle = styled(TypographyComponent)(
-    () => css`
+export const Subtitle = styled(Typography)<ITypographyComponentProps>(
+    ({fontPeso, fontSize}) => css`
         &&{
-            font-size: ${theme.typograph.fontsize.body2};
-            color: ${theme.colors.font.title};
-            font-family: sans-serif;
+            font-size: ${fontSize || theme.typograph.fontsize.medium};
+            font-weight: ${fontPeso};
+            font-family: 'Poppins';
         }
     `
 )
 
-export const UserName = styled(TypographyComponent)(
-    () => css`
-        &&{
-            font-size: ${theme.typograph.fontsize.base};
-            color: ${theme.colors.font.title};
-            font-family: sans-serif;
-        }
-    `
-)
-
-export const CardContainer = styled(Box)<ICardContainerProps>(
-    ({gapValue}) => css`
-        &&{
-            display: flex;
-            justify-content: space-between;
-            gap: ${gapValue ? gapValue : '0'};
-            align-items: center;
-        }
-    `
-)
-
-export const UserNameCard = styled(Box)`
-    background-color: ${theme?.colors?.base?.gray001};
-    display: flex;
-    justify-content: center;
-    border-radius: 10px;
-    padding: 0.5rem 2.5rem;
-`
-
-export const AttackIcon = styled(PriorityHighOutlinedIcon)`
-    color: ${theme?.colors?.base?.red};
-`
-
-export const DefenseIcon = styled(ShieldOutlinedIcon)`
-    color: #22AB30;
-`
-
-export const EnterButton = styled(Button)(
-    () => css`
-        &&{
-            font-size: ${theme.typograph.fontsize.minimum};
-            width: 100%;
-            padding: 0.6rem;
-            width: 100%;
-        }
-    `
-)
-
-export const cardsContainer = styled(Box)`
+export const CarouselContainer = styled(Box)`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 3rem;
-    width: 100%;
-    padding: 0 0 0 6rem;
+    gap: 0.7rem;
 `

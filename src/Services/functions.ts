@@ -1,26 +1,49 @@
-import {baseURL} from "./api";
+import {baseURLFirebase, baseURLPostgres} from "./api";
 import axios from "axios";
 
-const GetProducts = async (pagesNumber: number) => {
-    const token = "live_tCSL7SzBRhqgOVbLRpteLd10boF7UHJO3bBCBfp0DtiVTnDm1tSvb1a7LJLD2nfS"
-    const headers = {
-        Authorization: `Bearer ${token}`
-    };
-
+const GetProducts = async (userId: number) => {
     try {
-        const response = await axios.get(`${baseURL}?limit=${pagesNumber}`, {headers});
+        const response = await axios.get(`${baseURLFirebase}/anuncios/getAnuncios?iUsuarioId=${userId}`);
         return response?.data;
     } catch (error) {
-        console.log("ERRO:", error);
         return null;
     }
 }
 
-// EXEMPLO DE CHAMADA:
+const GetUserById = async (userId: number) => {
+    try{
+        const response = await axios.get(`${baseURLPostgres}/users/${userId}`)
+        return response?.data
+    } catch (error){
+        return null;
+    }
+}
 
-// const GetImage = async () => {
-//     const image = await GetProducts(2)
-//     setData(image)
-// }
+const FavoriteProduct = async (userId: number, productId: string) => {
+    try{
+        const response = await axios.post(`${baseURLFirebase}/favoritos/salvar`, {iUsuarioId: userId, cAnuncioId: productId})
+        return response?.data
+    } catch (error){
+        return null;
+    }
+}
 
-export { GetProducts };
+const GetFavoriteProducts = async (userId: number) => {
+    try {
+        const response = await axios.get(`${baseURLFirebase}/favoritos/getByUsuario/${userId}`);
+        return response;
+    } catch (error) {
+        return null;
+    }
+}
+
+const DeleteFavoriteProduct = async (userId: number, productId: string) => {
+    try{
+        const response = await axios.delete(`${baseURLFirebase}/favoritos/deletar?iUsuarioId=${userId}&cAnuncioId=${productId}`)
+        return response
+    } catch (error){
+        return null;
+    }
+}
+
+export {GetProducts, GetUserById, FavoriteProduct, GetFavoriteProducts, DeleteFavoriteProduct}
