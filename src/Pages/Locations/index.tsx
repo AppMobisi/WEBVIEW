@@ -8,6 +8,8 @@ import { TopBar } from '../../Components/TopBar'
 import { LocationCard } from '../../Components/LocationCard'
 import { locations } from './mock'
 
+import { GetUserNearLocations } from '../../Services/functions'
+
 interface ILocationsProps{
     url: string
     name: string
@@ -21,10 +23,19 @@ const Locations = () => {
     const [nameToSearch, setNameToSearch] = useState<string>()
     const [optionsListed, setOptionsListed] = useState<ILocationsProps[]>([])
 
+    const [latitude, setLatitutde] = useState<number>(0)
+    const [longitude, setLongitude] = useState<number>(0)
+
     const [othersLocations, setOthersLocations] = useState<ILocationsProps[]>([])
     const [originalOthersLocations, setOriginalOthersLocations] = useState<ILocationsProps[]>([])
 
     const navigate = useNavigate()
+
+    const GetUserLocations = async () => {
+      const response = await GetUserNearLocations(latitude, longitude, 5)
+      setOthersLocations(response?.data?.data)
+      setOriginalOthersLocations(response?.data?.data)
+    }
 
     useEffect(() => {
       if(locations?.length > 0){
@@ -56,6 +67,22 @@ const Locations = () => {
             setOthersLocations(originalOthersLocations)
         }
     }, [nameToSearch])
+
+    useEffect(() => {
+      if(coordX){
+        setLongitude(Number(coordX))
+      }
+
+      if(coordY){
+        setLatitutde(Number(coordY))
+      }
+    }, [coordX, coordY])
+
+    useEffect(() => {
+      if(longitude && latitude){
+        GetUserLocations()
+      }
+    }, [latitude, longitude])
 
     // USAR EM ULTIMO CASO
     // useEffect(() => {
@@ -91,7 +118,7 @@ const Locations = () => {
                                 localName={imageUrl.name} 
                                 location={imageUrl.endereco} 
                                 ratingValue={imageUrl.rating} 
-                                key={imageUrl.pk_id}
+                                key={imageUrl.name}
                                 handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.pk_id}`)}
                               />
                         );

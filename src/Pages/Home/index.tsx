@@ -48,6 +48,7 @@ const Home = () => {
     const GetUser = async () => {
       const response = await GetUserById(Number(userIdValue))
       setUserName(response?.data?.name)
+      sessionStorage.setItem('userName', response?.data?.name)
     }
     
     useEffect(() => {
@@ -62,6 +63,12 @@ const Home = () => {
         setUserIdValue(Number(sessionStorage.getItem('userId')))
       }
     }, [sessionStorage.getItem('userId')])
+
+    useEffect(() => {
+      if(sessionStorage.getItem('userName')){
+        setUserName(sessionStorage.getItem('userName'))
+      }
+    }, [sessionStorage.getItem('userName')])
 
     useEffect(() => {
       if(userIdValue){
