@@ -125,7 +125,11 @@ const Home = () => {
                         {productsList.map((product, index) => {
                         return (
                             <div className="slider" key={index} style={{ padding: '0.5rem 0.8rem'}}>
-                              <ProductCard sectionName={product?.cTitulo} productImg={product.cFoto} productPrice={product.nPreco} handleClick={() => navigate(`/produtos/${product?.cTitulo}/${product?.nPreco}/${encodeURIComponent(product?.cFoto)}/${product?.iAnuncianteId}/${product?.cDescricao}/${product?.id}`)}/>
+                              <ProductCard 
+                                sectionName={product?.cTitulo} 
+                                productImg={product.cFoto} 
+                                productPrice={product.nPreco} 
+                                handleClick={() => navigate(`/produtos/${product?.cTitulo}/${product?.nPreco}/${encodeURIComponent(product?.cFoto)}/${product?.iAnuncianteId}/${product?.cDescricao}/${product?.id}`)}/>
                             </div>
                         );
                         })}
