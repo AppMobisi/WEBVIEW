@@ -6,8 +6,8 @@ import { LocationCard } from '../../Components/LocationCard'
 import { ProductCard } from '../../Components/ProductCard'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useNavigate } from 'react-router-dom'
-import { GetProducts } from "../../Services/functions"
+import { useNavigate, useParams } from 'react-router-dom'
+import { GetProducts, GetUserById } from "../../Services/functions"
 
 import classificationIcon from '../../Assets/classificationIcon.png'
 import storeIcon from '../../Assets/storeIcon.png'
@@ -23,13 +23,11 @@ interface IProductsListProps {
   cDescricao: string
 }
 
-declare const informacoesWeb: any;
 
 const Home = () => {
-    const [userName, setUserName] = useState('')
-    const [coordX, setCoordX] = useState('')
-    const [coordY, setCoordY] = useState('')
-    const userId = 1
+    const {userId} = useParams()
+    const [userIdValue, setUserIdValue] = useState<any>()
+    const [userName, setUserName] = useState<any>()
     const navigate = useNavigate()
 
     const [productsList, setProductsList] = useState<IProductsListProps[]>([])
@@ -42,27 +40,35 @@ const Home = () => {
         }
       };
 
-      const getAndroidInfo = () => {
-        if(typeof informacoesWeb !== undefined) {
-          const iUsuarioId = informacoesWeb.getiUsuarioId();
-          const CoordenadaX = informacoesWeb.getCoordenadaX();
-          const CoordenadaY = informacoesWeb.getCoordenadaY();
-
-          setUserName(iUsuarioId) 
-          setCoordX(CoordenadaX)
-          setCoordY(CoordenadaY)         
-        }
-      };
-
     const GetImage = async () => {
-      const image = await GetProducts(Number(userId))
+      const image = await GetProducts(Number(userIdValue))
       setProductsList(image?.data)
     }
 
+    const GetUser = async () => {
+      const response = await GetUserById(Number(userIdValue))
+      setUserName(response?.data?.name)
+    }
+    
     useEffect(() => {
+      if(userId){
+        setUserIdValue(Number(userId))
+        sessionStorage.setItem('userId', String(userId))
+      }
+    }, [userId])
+
+    useEffect(() => {
+      if(sessionStorage.getItem('userId')){
+        setUserIdValue(Number(sessionStorage.getItem('userId')))
+      }
+    }, [sessionStorage.getItem('userId')])
+
+    useEffect(() => {
+      if(userIdValue){
         GetImage()
-        getAndroidInfo()
-    }, [])
+        GetUser()
+      }
+    }, [userIdValue])
 
     return(
         <>
@@ -70,12 +76,10 @@ const Home = () => {
                 <TopBar />
                 <S.TitleAndSubtitleContainer>
                     <S.TypographyComponent fontWeight={'600'}>Olá, {userName}</S.TypographyComponent>
-                    <S.TypographyComponent fontWeight={'600'}>Olá, {coordX}</S.TypographyComponent>
-                    <S.TypographyComponent fontWeight={'600'}>Olá, {coordY}</S.TypographyComponent>
                     <S.Subtitle fontWeight={'300'}>Bem-vindo(a) ao Mobisi!</S.Subtitle> 
                 </S.TitleAndSubtitleContainer>
-                <MenuSectionCard image={classificationIcon} text='Favoritos' urlToNavigate='central-favoritos'/>
-                <MenuSectionCard image={storeIcon} text='Loja' urlToNavigate='produtos'/>
+                <MenuSectionCard image={classificationIcon} text='Favoritos' urlToNavigate='/central-favoritos'/>
+                <MenuSectionCard image={storeIcon} text='Loja' urlToNavigate='/produtos'/>
                 <S.CarouselContainer>
                   <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Lugares para você:</S.Subtitle>
                   <Carousel
