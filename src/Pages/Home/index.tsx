@@ -25,10 +25,8 @@ interface IProductsListProps {
 
 
 const Home = () => {
-    const {userId, coordenadaX, coordenadaY} = useParams()
+    const {userId} = useParams()
     const [userName, setUserName] = useState<any>()
-    const [coordX, setCoordX] = useState<any>()
-    const [coordY, setCoordY] = useState<any>()
     const navigate = useNavigate()
 
     const [productsList, setProductsList] = useState<IProductsListProps[]>([])
@@ -55,31 +53,13 @@ const Home = () => {
         setUserName(userId)
         sessionStorage.setItem('userId', String(userId))
       }
-
-      if(coordenadaX){
-        setCoordX(coordenadaX)
-        sessionStorage.setItem('coordX', String(coordenadaX))
-      }
-
-      if(coordenadaY){
-        setCoordY(coordenadaY)
-        sessionStorage.setItem('coordY', String(coordenadaY))
-      }
-    }, [userId, coordenadaX, coordenadaY])
+    }, [userId])
 
     useEffect(() => {
       if(sessionStorage.getItem('userID')){
         setUserName(sessionStorage.getItem('userID'))
       }
-
-      if(sessionStorage.getItem('coordY')){
-        setCoordY(sessionStorage.getItem('coordY'))
-      }
-
-      if(sessionStorage.getItem('coordX')){
-        setCoordX(sessionStorage.getItem('coordX'))
-      }
-    }, [sessionStorage.getItem('userID'), sessionStorage.getItem('coordY'), sessionStorage.getItem('coordX')])
+    }, [sessionStorage.getItem('userID')])
 
     return(
         <>
@@ -87,12 +67,10 @@ const Home = () => {
                 <TopBar />
                 <S.TitleAndSubtitleContainer>
                     <S.TypographyComponent fontWeight={'600'}>Olá, {userName}</S.TypographyComponent>
-                    <S.TypographyComponent fontWeight={'600'}>Olá, {coordX}</S.TypographyComponent>
-                    <S.TypographyComponent fontWeight={'600'}>Olá, {coordY}</S.TypographyComponent>
                     <S.Subtitle fontWeight={'300'}>Bem-vindo(a) ao Mobisi!</S.Subtitle> 
                 </S.TitleAndSubtitleContainer>
-                <MenuSectionCard image={classificationIcon} text='Favoritos' urlToNavigate='central-favoritos'/>
-                <MenuSectionCard image={storeIcon} text='Loja' urlToNavigate='produtos'/>
+                <MenuSectionCard image={classificationIcon} text='Favoritos' urlToNavigate='/central-favoritos'/>
+                <MenuSectionCard image={storeIcon} text='Loja' urlToNavigate='/produtos'/>
                 <S.CarouselContainer>
                   <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Lugares para você:</S.Subtitle>
                   <Carousel
