@@ -46,4 +46,13 @@ const DeleteFavoriteProduct = async (userId: number, productId: string) => {
     }
 }
 
-export {GetProducts, GetUserById, FavoriteProduct, GetFavoriteProducts, DeleteFavoriteProduct}
+const GetUserNearLocations = async (latitude: number, longitude: number, raio: number) => {
+    try{
+        const response = await axios.get(`${baseURLPostgres}/establishment?longitude=${longitude}&latitude=${latitude}&radius=${raio}`)
+        return response
+    } catch (error){
+        return null;
+    }
+}
+
+export {GetProducts, GetUserById, FavoriteProduct, GetFavoriteProducts, DeleteFavoriteProduct, GetUserNearLocations}
