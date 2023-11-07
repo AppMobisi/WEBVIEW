@@ -7,7 +7,7 @@ import { ProductCard } from '../../Components/ProductCard'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useNavigate, useParams } from 'react-router-dom'
-import { GetProducts } from "../../Services/functions"
+import { GetProducts, GetUserById } from "../../Services/functions"
 
 import classificationIcon from '../../Assets/classificationIcon.png'
 import storeIcon from '../../Assets/storeIcon.png'
@@ -26,6 +26,7 @@ interface IProductsListProps {
 
 const Home = () => {
     const {userId} = useParams()
+    const [userIdValue, setUserIdValue] = useState<any>()
     const [userName, setUserName] = useState<any>()
     const navigate = useNavigate()
 
@@ -40,26 +41,34 @@ const Home = () => {
       };
 
     const GetImage = async () => {
-      const image = await GetProducts(Number(userId))
+      const image = await GetProducts(Number(userIdValue))
       setProductsList(image?.data)
     }
 
-    useEffect(() => {
-        GetImage()
-    }, [])
-
+    const GetUser = async () => {
+      const response = await GetUserById(Number(userIdValue))
+      setUserName(response?.data?.name)
+    }
+    
     useEffect(() => {
       if(userId){
-        setUserName(userId)
+        setUserIdValue(Number(userId))
         sessionStorage.setItem('userId', String(userId))
       }
     }, [userId])
 
     useEffect(() => {
       if(sessionStorage.getItem('userId')){
-        setUserName(sessionStorage.getItem('userId'))
+        setUserIdValue(Number(sessionStorage.getItem('userId')))
       }
     }, [sessionStorage.getItem('userId')])
+
+    useEffect(() => {
+      if(userIdValue){
+        GetImage()
+        GetUser()
+      }
+    }, [userIdValue])
 
     return(
         <>
