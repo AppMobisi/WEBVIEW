@@ -56,10 +56,10 @@ const Home = () => {
     }, [userId])
 
     useEffect(() => {
-      if(sessionStorage.getItem('userID')){
-        setUserName(sessionStorage.getItem('userID'))
+      if(sessionStorage.getItem('userId')){
+        setUserName(sessionStorage.getItem('userId'))
       }
-    }, [sessionStorage.getItem('userID')])
+    }, [sessionStorage.getItem('userId')])
 
     return(
         <>
