@@ -57,11 +57,37 @@ const GetUserNearLocations = async (latitude: number, longitude: number, raio: n
 
 const GetLocationImage = async (photoReference: string) => {
     try{
-        const response = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?placeId=${photoReference}&key=AIzaSyBzAGAGzBzvVwTKsKwAtI76Hjfp-lZQ3uo`)
+        const response = await axios.get(`${baseURLPostgres}/establishment/photo?idPhoto=${photoReference}`)
         return response
     } catch (error){
         return null
     }
 }
 
-export {GetProducts, GetUserById, FavoriteProduct, GetFavoriteProducts, DeleteFavoriteProduct, GetUserNearLocations, GetLocationImage}
+const FavoriteLocation = async (userId: number, name: string, score: number, locationPhoto: string, address: string) => {
+    const body = {
+        iUsuarioId: userId,
+        cNome: name,
+        nNota: score, 
+        cFoto: locationPhoto,
+        cEndereco: address
+    }
+
+    try{
+        const response = await axios.post(`${baseURLFirebase}/estabelecimentos/favoritar`, body)
+        return response?.data
+    } catch (error){
+        return null;
+    }
+}
+
+const GetFavoriteLocations = async (userId: number) => {
+    try{
+        const response = await axios.get(`${baseURLFirebase}/estabelecimentos/favoritos/${userId}`)
+        return response
+    } catch (error){
+        return null
+    }
+}
+
+export {GetProducts, GetUserById, FavoriteProduct, GetFavoriteProducts, DeleteFavoriteProduct, GetUserNearLocations, GetLocationImage, FavoriteLocation, GetFavoriteLocations}
