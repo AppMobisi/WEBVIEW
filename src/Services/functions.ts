@@ -90,4 +90,13 @@ const GetFavoriteLocations = async (userId: number) => {
     }
 }
 
-export {GetProducts, GetUserById, FavoriteProduct, GetFavoriteProducts, DeleteFavoriteProduct, GetUserNearLocations, GetLocationImage, FavoriteLocation, GetFavoriteLocations}
+const DeleteFavoriteLocation = async (locationId: string) => {
+    try{
+        const response = await axios.delete(`${baseURLFirebase}/estabelecimentos/desfavoritar?cId=${locationId}`)
+        return response
+    } catch (error){
+        return null
+    }
+}
+
+export {GetProducts, GetUserById, FavoriteProduct, GetFavoriteProducts, DeleteFavoriteProduct, GetUserNearLocations, GetLocationImage, FavoriteLocation, GetFavoriteLocations, DeleteFavoriteLocation}

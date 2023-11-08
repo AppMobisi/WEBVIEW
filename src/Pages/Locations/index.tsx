@@ -118,7 +118,7 @@ const Locations = () => {
                                 location={imageUrl.vicinity} 
                                 ratingValue={imageUrl.rating} 
                                 key={imageUrl.name}
-                                handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.name}/${imageUrl.vicinity}/${imageUrl.rating}/${imageUrl?.photos?.length > 0 ? imageUrl?.photos[0]?.photo_reference : 0}`)}
+                                handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.name}/${imageUrl.vicinity}/${imageUrl.rating}/${imageUrl?.photos?.length > 0 ? imageUrl?.photos[0]?.photo_reference : 0}/0`)}
                               />
                         );
                         }): <HourglassTopIcon sx={{ fontSize: '6rem', margin: '6rem 0 0 0', color: '#001489' }}/>}
