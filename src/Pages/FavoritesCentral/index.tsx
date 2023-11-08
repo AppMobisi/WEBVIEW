@@ -10,18 +10,16 @@ import FormControl from '@mui/material/FormControl';
 import { PageWrapper } from '../Home/styles'
 import { TopBar } from '../../Components/TopBar'
 
-import { sliderImageUrl } from '../Home/mock'
 import { LocationCard } from '../../Components/LocationCard'
 import { ProductCard } from '../../Components/ProductCard';
 
-import { GetFavoriteProducts } from '../../Services/functions';
+import { GetFavoriteProducts, GetFavoriteLocations } from '../../Services/functions';
 
 interface ILocationsProps{
-    url: string
-    name: string
-    endereco: string
-    rating: number
-    pk_id: number
+    cFoto: string
+    cNome: string
+    cEndereco: string
+    nNota: number
 }
 
 interface IProductsProps{
@@ -51,19 +49,18 @@ const FavoritesCentral = () => {
         setOriginalFavoriteProducts(response?.data?.data)
     }
 
-    useEffect(() => {
-        if(sliderImageUrl?.length){
-            setFavoriteLocations(sliderImageUrl)
-            setOriginalFavoriteLocations(sliderImageUrl)
-        }
-    }, [sliderImageUrl])
+    const GetUserFavoriteLocations = async () => {
+        const response = await GetFavoriteLocations(Number(userIdValue))
+        setFavoriteLocations(response?.data?.data)
+        setOriginalFavoriteLocations(response?.data?.data)
+    }
 
     useEffect(() => {
         if(nameToSearch?.length && optionSelected == 1){
             let favoriteLocationsList: ILocationsProps[] = []
 
             favoriteLocations?.map((locat) => {
-                if(locat.name.toLowerCase().includes(nameToSearch.toLowerCase())){
+                if(locat.cNome.toLowerCase().includes(nameToSearch.toLowerCase())){
                     favoriteLocationsList.push(locat)
                 }
             })
@@ -98,6 +95,7 @@ const FavoritesCentral = () => {
     useEffect(() => {
         if(userIdValue){
             GetUserFavoriteProducts()
+            GetUserFavoriteLocations()
         }
     }, [userIdValue])
 
@@ -121,13 +119,21 @@ const FavoritesCentral = () => {
                     </RadioGroup>
                 </FormControl>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', width: '100%' }}>
-                    <S.TypographyComponent fontPeso={'600'} tamanho={'1.2rem'}>Meus {optionSelected == 1 ? "Lugares" : "Produtos"} Favoritos:</S.TypographyComponent>
+                    {!favoriteProducts?.length && optionSelected == 2 ?  <S.TypographyComponent fontPeso={'600'} tamanho={'1.2rem'}>Você não tem itens favoritados</S.TypographyComponent>:  <S.TypographyComponent fontPeso={'600'} tamanho={'1.2rem'}>Meus {optionSelected == 1 ? "Lugares" : "Produtos"} Favoritos:</S.TypographyComponent>}
                     <S.LocationContainer>
                         {optionSelected == 1 ? 
                             <>
                                 {!!favoriteLocations?.length && <>
                                     {favoriteLocations.map((loc, index) => {
-                                        return(<LocationCard imgUrl={loc.url} localName={loc.name} location={loc.endereco} ratingValue={loc.rating} key={index}  handleClickViewMore={() => navigate(`/estabelecimentos/${loc.pk_id}`)}/>)
+                                        return(
+                                            <LocationCard 
+                                                imgUrl={loc.cFoto} 
+                                                localName={loc.cNome} 
+                                                location={loc.cEndereco} 
+                                                ratingValue={loc.nNota} 
+                                                key={index}  
+                                                handleClickViewMore={() => navigate(`/estabelecimentos/${loc.cNome}/${loc.cEndereco}/${loc.nNota}/${loc.cFoto}`)}
+                                            />)
                                     })}
                             </>
                         }

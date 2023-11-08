@@ -6,9 +6,13 @@ import { PageWrapper } from '../Home/styles'
 import { TopBar } from '../../Components/TopBar'
 
 import { LocationCard } from '../../Components/LocationCard'
-import { locations } from './mock'
 
 import { GetUserNearLocations } from '../../Services/functions'
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+
+interface IPhotosProps{
+  photo_reference: string
+}
 
 interface ILocationsProps{
     url: string
@@ -16,6 +20,8 @@ interface ILocationsProps{
     endereco: string
     rating: number
     pk_id: number
+    vicinity: string
+    photos: IPhotosProps[]
 }
 
 const Locations = () => {
@@ -32,17 +38,10 @@ const Locations = () => {
     const navigate = useNavigate()
 
     const GetUserLocations = async () => {
-      const response = await GetUserNearLocations(latitude, longitude, 5)
+      const response = await GetUserNearLocations(latitude, longitude, 5000)
       setOthersLocations(response?.data?.data)
       setOriginalOthersLocations(response?.data?.data)
     }
-
-    useEffect(() => {
-      if(locations?.length > 0){
-        setOthersLocations(locations)
-        setOriginalOthersLocations(locations)
-      }
-    }, [locations])
 
     useEffect(() => {
       if(othersLocations?.length > 0){
@@ -84,11 +83,12 @@ const Locations = () => {
       }
     }, [latitude, longitude])
 
-    // USAR EM ULTIMO CASO
     // useEffect(() => {
     //   if ("geolocation" in navigator) {
     //     navigator.geolocation.getCurrentPosition((position) => {
     //       const { latitude, longitude } = position.coords;
+    //       setLatitutde(latitude)
+    //       setLongitude(longitude)
     //       console.log("Latitude:", latitude);
     //       console.log("Longitude:", longitude);
     //     }, (error) => {
@@ -104,25 +104,25 @@ const Locations = () => {
             <PageWrapper>
                 <TopBar />
                 <S.TypographyComponent fontPeso={'600'} tamanho={'1.5rem'}>Dê uma olhada nos lugares acessíveis que preparamos!</S.TypographyComponent>
-                <S.TypographyComponent fontPeso={'600'} tamanho={'1.5rem'}>{coordX} / {coordY}</S.TypographyComponent>
                 <S.SearchContainer>
                     <S.SearchInput placeholder='Pesquisar...' onChange={(e) => setNameToSearch(e.target.value)}/>
                     <S.IconSearch />
                 </S.SearchContainer>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', width: '100%' }}>
                     <S.LocationContainer>
-                      {optionsListed.map((imageUrl) => {
+                      {optionsListed?.length > 0 ? optionsListed.map((imageUrl) => {
                         return (
                               <LocationCard 
                                 imgUrl={imageUrl.url} 
                                 localName={imageUrl.name} 
-                                location={imageUrl.endereco} 
+                                location={imageUrl.vicinity} 
                                 ratingValue={imageUrl.rating} 
                                 key={imageUrl.name}
-                                handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.pk_id}`)}
+                                handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.name}/${imageUrl.vicinity}/${imageUrl.rating}/${imageUrl?.photos?.length > 0 ? imageUrl?.photos[0]?.photo_reference : 0}`)}
                               />
                         );
-                        })}
+                        }): <HourglassTopIcon sx={{ fontSize: '6rem', margin: '6rem 0 0 0', color: '#001489' }}/>}
+                      {}
                     </S.LocationContainer>
                 </div>
             </PageWrapper>        

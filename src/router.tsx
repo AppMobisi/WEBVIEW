@@ -15,7 +15,7 @@ const AppRouter = () => {
         <Route path="/:userId" element={<Home />} />
         <Route path="/central-favoritos" element={<FavoritesCentral />} />
         <Route path="/estabelecimentos/:coordX/:coordY" element={<Locations />} />
-        <Route path="/estabelecimentos/:id" element={<LocationDetails />} />
+        <Route path="/estabelecimentos/:name/:vicinity/:rating/:photos" element={<LocationDetails />} />
         <Route path="/classificar/:id" element={<Classification />} />
         <Route path="/produtos/:productName/:productPrice/:productPhoto/:anuncianteId/:productDesc/:productId" element={<ProductDetails />} />
         <Route path="/produtos" element={<ProductsHub />} />
