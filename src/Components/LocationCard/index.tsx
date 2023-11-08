@@ -9,12 +9,11 @@ export interface ILocationCardProps{
     handleClickViewMore: () => void
 }
 
-const LocationCard = ({imgUrl, localName, location, ratingValue, handleClickViewMore}: ILocationCardProps) => {
+const LocationCard = ({localName, location, ratingValue, handleClickViewMore}: ILocationCardProps) => {
     return(
         <>
             <S.CardContainer>
-                <S.LocalImage backUrl={imgUrl}></S.LocalImage>
-                <div style={{ padding: '0.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '50%'}}>
+                <div style={{ padding: '0.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '50%', gap: '0.5rem'}}>
                     <S.Text fontWeight={'600'}>{localName}</S.Text>
                     <S.Text>{location}</S.Text>
                     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>

@@ -121,7 +121,7 @@ const FavoritesCentral = () => {
                     </RadioGroup>
                 </FormControl>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', width: '100%' }}>
-                    <S.TypographyComponent fontPeso={'600'} tamanho={'1.2rem'}>Meus {optionSelected == 1 ? "Lugares" : "Produtos"} Favoritos:</S.TypographyComponent>
+                    {!favoriteProducts?.length && optionSelected == 2 ?  <S.TypographyComponent fontPeso={'600'} tamanho={'1.2rem'}>Você não tem itens favoritados</S.TypographyComponent>:  <S.TypographyComponent fontPeso={'600'} tamanho={'1.2rem'}>Meus {optionSelected == 1 ? "Lugares" : "Produtos"} Favoritos:</S.TypographyComponent>}
                     <S.LocationContainer>
                         {optionSelected == 1 ? 
                             <>
