@@ -1,7 +1,7 @@
 import * as S from './style'
 import { useEffect, useState } from 'react'
 // import { DeficiencyTypeModal } from '../../Components/DeficiencyTypeModal';
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 // import Fab from '@mui/material/Fab';
 // import AccessibleIcon from '@mui/icons-material/Accessible';
@@ -13,7 +13,7 @@ import Rating from '@mui/material/Rating';
 import { PageWrapper } from '../Home/styles'
 import { TypographyComponent } from '../FavoritesCentral/style'
 
-import { GetLocationImage, FavoriteLocation, GetFavoriteLocations } from '../../Services/functions';
+import { GetLocationImage, FavoriteLocation, GetFavoriteLocations, DeleteFavoriteLocation } from '../../Services/functions';
 
 interface ILocationsProps{
     cFoto: string
@@ -24,7 +24,9 @@ interface ILocationsProps{
 
 const LocationDetails = () => {
     const [userIdValue, setUserIdValue] = useState<any>()
-    const {name, vicinity, rating, photos} = useParams()
+    const {name, vicinity, rating, photos, id} = useParams()
+
+    const navigate = useNavigate()
 
     const [locationImage, setLocationImage] = useState<string>("")
     const [locationName, setLocationName] = useState<string>("")
@@ -47,6 +49,14 @@ const LocationDetails = () => {
     const GetUserFavoriteLocations = async () => {
         const response = await GetFavoriteLocations(Number(userIdValue))
         setFavoriteLocations(response?.data?.data)
+    }
+
+    const DeleteLocation = async () => {
+        if(id){
+            const response = await DeleteFavoriteLocation(id)
+            setFavoriteLocations(response?.data?.data)
+            navigate('/central-favoritos')
+        }
     }
 
     const FavoriteLocationFunction = async () => {
@@ -168,6 +178,10 @@ const LocationDetails = () => {
                     <S.LocationButton variant='outlined' onClick={() => {
                         if(!isFavorite){
                             FavoriteLocationFunction()
+                        }
+
+                        if(isFavorite){
+                            DeleteLocation()
                         }
                     }}>
                         <FavoriteIcon />

@@ -20,6 +20,7 @@ interface ILocationsProps{
     cNome: string
     cEndereco: string
     nNota: number
+    id: number
 }
 
 interface IProductsProps{
@@ -132,7 +133,7 @@ const FavoritesCentral = () => {
                                                 location={loc.cEndereco} 
                                                 ratingValue={loc.nNota} 
                                                 key={index}  
-                                                handleClickViewMore={() => navigate(`/estabelecimentos/${loc.cNome}/${loc.cEndereco}/${loc.nNota}/${loc.cFoto}`)}
+                                                handleClickViewMore={() => navigate(`/estabelecimentos/${loc.cNome}/${loc.cEndereco}/${loc.nNota}/${encodeURIComponent(loc.cFoto)}/${loc?.id}`)}
                                             />)
                                     })}
                             </>
