@@ -27,6 +27,7 @@ export const LocationInfoContainer = styled(Box)`
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
+    gap: 1rem;
 `
 
 export const LocationAccessContainer = styled(Box)`
@@ -50,7 +51,7 @@ export const LocationButton = styled(Button)(
             font-size: 1rem;
             display: flex;
             gap: 1rem;
-            width: 48%;
+            width: 100%;
         }
     `
 )

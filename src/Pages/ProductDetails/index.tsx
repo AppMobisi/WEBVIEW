@@ -1,7 +1,7 @@
 import * as S from './styles'
 import { useEffect, useState } from "react";
 import { PageWrapper } from "../Home/styles";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { GetUserById, FavoriteProduct, GetFavoriteProducts, DeleteFavoriteProduct} from '../../Services/functions';
 import { TypographyComponent } from '../FavoritesCentral/style'
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -11,8 +11,7 @@ interface IProductsProps {
 }
 
 const ProductDetails = () => {
-    const userId = 1
-    const navigate = useNavigate()
+    const [userIdValue, setUserIdValue] = useState<any>()
     const [urlPhoto, setUrlPhoto] = useState<string>("")
     const {productName, productPrice, productPhoto, anuncianteId, productDesc, productId} = useParams()
 
@@ -41,7 +40,7 @@ const ProductDetails = () => {
     }
 
     const FavoriteProductFunction = async () => {
-        const response = await FavoriteProduct(userId, idProduto)
+        const response = await FavoriteProduct(Number(userIdValue), idProduto)
 
         if(response?.statusCode == 200){
             setIsFavorite(true)
@@ -49,7 +48,7 @@ const ProductDetails = () => {
     }
 
     const DeleteFavoriteProductFunction = async () => {
-        const response = await DeleteFavoriteProduct(userId, idProduto)
+        const response = await DeleteFavoriteProduct(Number(userIdValue), idProduto)
         
         if(response?.status == 200){
             setIsFavorite(false)
@@ -57,7 +56,7 @@ const ProductDetails = () => {
     }
 
     const GetFavoriteProductsFunction = async () => {
-        const response = await GetFavoriteProducts(userId);
+        const response = await GetFavoriteProducts(Number(userIdValue));
     
         if (response !== null) {
             setFavoriteProductsList(response?.data?.data);
@@ -82,22 +81,22 @@ const ProductDetails = () => {
     }, [anuncianteId])
 
     useEffect(() => {
-        if(userId){
+        if(userIdValue){
             GetFavoriteProductsFunction()
         }
-    }, [userId])
+    }, [userIdValue])
 
     useEffect(() => {
-        if(userId && idProduto && permissionFavoriteProduct && !isFavorite){
+        if(userIdValue && idProduto && permissionFavoriteProduct && !isFavorite){
             FavoriteProductFunction()
             setPermissionFavoriteProduct(false)
         }
 
-        if(userId && idProduto && permissionFavoriteProduct && isFavorite){
+        if(userIdValue && idProduto && permissionFavoriteProduct && isFavorite){
             DeleteFavoriteProductFunction()
             setPermissionFavoriteProduct(false)
         }
-    }, [userId, idProduto, permissionFavoriteProduct, isFavorite])
+    }, [userIdValue, idProduto, permissionFavoriteProduct, isFavorite])
 
     useEffect(() => {
         if(favoriteProductsList?.length > 0 && idProduto){
@@ -109,11 +108,17 @@ const ProductDetails = () => {
         }
     }, [favoriteProductsList, idProduto])
 
+    useEffect(() => {
+        if(sessionStorage.getItem('userId')){
+          setUserIdValue(Number(sessionStorage.getItem('userId')))
+        }
+      }, [sessionStorage.getItem('userId')])
+
     return(
         <>
             <S.LocationImg backUrl={urlPhoto} src={urlPhoto}/>
             <PageWrapper>
-                <S.ReturnIcon onClick={() => navigate("/")}/>
+                <S.ReturnIcon onClick={() =>  window.history.back()}/>
                 <div style={{display: 'flex', flexDirection: 'column', gap: '0.8rem'}}>
                     <TypographyComponent fontPeso={'600'} tamanho={'1.5rem'}>{productName}</TypographyComponent>
                     <TypographyComponent fontPeso={'600'} tamanho={'1.5rem'}>Preço: {productPrice}</TypographyComponent>

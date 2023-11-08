@@ -1,0 +1,31 @@
+name: Deploy React App to Render
+
+on:
+  push:
+    branches: ["*"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14.17.0'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build the React application
+      run: npm run build
+
+    - name: Render Deploy Action
+      uses: johnbeynon/render-deploy-action@v0.0.8
+      with:
+        service-id: ${{secrets.SERVICE_ID_DEV}}
+        api-key: ${{secrets.RENDER_APY_KEY}}
+        distribution: 'auto' 

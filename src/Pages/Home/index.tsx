@@ -6,8 +6,8 @@ import { LocationCard } from '../../Components/LocationCard'
 import { ProductCard } from '../../Components/ProductCard'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useNavigate } from 'react-router-dom'
-import { GetProducts } from "../../Services/functions"
+import { useNavigate, useParams } from 'react-router-dom'
+import { GetProducts, GetUserById } from "../../Services/functions"
 
 import classificationIcon from '../../Assets/classificationIcon.png'
 import storeIcon from '../../Assets/storeIcon.png'
@@ -23,9 +23,11 @@ interface IProductsListProps {
   cDescricao: string
 }
 
+
 const Home = () => {
-    const userName = "Henrique"
-    const userId = 1
+    const {userId} = useParams()
+    const [userIdValue, setUserIdValue] = useState<any>()
+    const [userName, setUserName] = useState<any>()
     const navigate = useNavigate()
 
     const [productsList, setProductsList] = useState<IProductsListProps[]>([])
@@ -39,13 +41,41 @@ const Home = () => {
       };
 
     const GetImage = async () => {
-      const image = await GetProducts(Number(userId))
+      const image = await GetProducts(Number(userIdValue))
       setProductsList(image?.data)
     }
 
+    const GetUser = async () => {
+      const response = await GetUserById(Number(userIdValue))
+      setUserName(response?.data?.name)
+      sessionStorage.setItem('userName', response?.data?.name)
+    }
+    
     useEffect(() => {
+      if(userId){
+        setUserIdValue(Number(userId))
+        sessionStorage.setItem('userId', String(userId))
+      }
+    }, [userId])
+
+    useEffect(() => {
+      if(sessionStorage.getItem('userId')){
+        setUserIdValue(Number(sessionStorage.getItem('userId')))
+      }
+    }, [sessionStorage.getItem('userId')])
+
+    useEffect(() => {
+      if(sessionStorage.getItem('userName')){
+        setUserName(sessionStorage.getItem('userName'))
+      }
+    }, [sessionStorage.getItem('userName')])
+
+    useEffect(() => {
+      if(userIdValue){
         GetImage()
-    }, [])
+        GetUser()
+      }
+    }, [userIdValue])
 
     return(
         <>
@@ -55,8 +85,8 @@ const Home = () => {
                     <S.TypographyComponent fontWeight={'600'}>Olá, {userName}</S.TypographyComponent>
                     <S.Subtitle fontWeight={'300'}>Bem-vindo(a) ao Mobisi!</S.Subtitle> 
                 </S.TitleAndSubtitleContainer>
-                <MenuSectionCard image={classificationIcon} text='Favoritos' urlToNavigate='central-favoritos'/>
-                <MenuSectionCard image={storeIcon} text='Loja'/>
+                <MenuSectionCard image={classificationIcon} text='Favoritos' urlToNavigate='/central-favoritos'/>
+                <MenuSectionCard image={storeIcon} text='Loja' urlToNavigate='/produtos'/>
                 <S.CarouselContainer>
                   <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Lugares para você:</S.Subtitle>
                   <Carousel
@@ -102,7 +132,11 @@ const Home = () => {
                         {productsList.map((product, index) => {
                         return (
                             <div className="slider" key={index} style={{ padding: '0.5rem 0.8rem'}}>
-                              <ProductCard sectionName={product?.cTitulo} productImg={product.cFoto} productPrice={product.nPreco} handleClick={() => navigate(`/produtos/${product?.cTitulo}/${product?.nPreco}/${encodeURIComponent(product?.cFoto)}/${product?.iAnuncianteId}/${product?.cDescricao}/${product?.id}`)}/>
+                              <ProductCard 
+                                sectionName={product?.cTitulo} 
+                                productImg={product.cFoto} 
+                                productPrice={product.nPreco} 
+                                handleClick={() => navigate(`/produtos/${product?.cTitulo}/${product?.nPreco}/${encodeURIComponent(product?.cFoto)}/${product?.iAnuncianteId}/${product?.cDescricao}/${product?.id}`)}/>
                             </div>
                         );
                         })}

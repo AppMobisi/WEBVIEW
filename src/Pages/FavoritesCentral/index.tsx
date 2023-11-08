@@ -10,56 +10,58 @@ import FormControl from '@mui/material/FormControl';
 import { PageWrapper } from '../Home/styles'
 import { TopBar } from '../../Components/TopBar'
 
-import { sliderImageUrl, products } from '../Home/mock'
 import { LocationCard } from '../../Components/LocationCard'
 import { ProductCard } from '../../Components/ProductCard';
 
+import { GetFavoriteProducts, GetFavoriteLocations } from '../../Services/functions';
+
 interface ILocationsProps{
-    url: string
-    name: string
-    endereco: string
-    rating: number
-    pk_id: number
+    cFoto: string
+    cNome: string
+    cEndereco: string
+    nNota: number
+    id: number
 }
 
 interface IProductsProps{
-    name: string
-    section: string
-    img_url: string
-    price: number
+    cFoto: string
+    cTitulo: string
+    nPreco: number
+    id: string
+    iAnuncianteId: number
+    cDescricao: string
 }
 
 const FavoritesCentral = () => {
+    const [userIdValue, setUserIdValue] = useState<any>()
     const [nameToSearch, setNameToSearch] = useState<string>()
 
     const [originalFavoriteLocations, setOriginalFavoriteLocations] = useState<ILocationsProps[]>()
     const [originalFavoriteProducts, setOriginalFavoriteProducts] = useState<IProductsProps[]>()
     const [favoriteLocations, setFavoriteLocations] = useState<ILocationsProps[]>()
     const [favoriteProducts, setFavoriteProducts] = useState<IProductsProps[]>()
-    const [optionSelected, setOptionsSelected] = useState(1)
+    const [optionSelected, setOptionsSelected] = useState(2)
 
     const navigate = useNavigate()
 
-    useEffect(() => {
-        if(sliderImageUrl?.length){
-            setFavoriteLocations(sliderImageUrl)
-            setOriginalFavoriteLocations(sliderImageUrl)
-        }
-    }, [sliderImageUrl])
+    const GetUserFavoriteProducts = async () => {
+        const response = await GetFavoriteProducts(Number(userIdValue))
+        setFavoriteProducts(response?.data?.data)
+        setOriginalFavoriteProducts(response?.data?.data)
+    }
 
-    useEffect(() => {
-        if(products?.length){
-            setFavoriteProducts(products)
-            setOriginalFavoriteProducts(products)
-        }
-    }, [products])
+    const GetUserFavoriteLocations = async () => {
+        const response = await GetFavoriteLocations(Number(userIdValue))
+        setFavoriteLocations(response?.data?.data)
+        setOriginalFavoriteLocations(response?.data?.data)
+    }
 
     useEffect(() => {
         if(nameToSearch?.length && optionSelected == 1){
             let favoriteLocationsList: ILocationsProps[] = []
 
             favoriteLocations?.map((locat) => {
-                if(locat.name.toLowerCase().includes(nameToSearch.toLowerCase())){
+                if(locat.cNome.toLowerCase().includes(nameToSearch.toLowerCase())){
                     favoriteLocationsList.push(locat)
                 }
             })
@@ -71,7 +73,7 @@ const FavoritesCentral = () => {
             let favoriteProductsList: IProductsProps[] = []
 
             favoriteProducts?.map((locat) => {
-                if(locat.name.toLowerCase().includes(nameToSearch.toLowerCase())){
+                if(locat.cTitulo.toLowerCase().includes(nameToSearch.toLowerCase())){
                     favoriteProductsList.push(locat)
                 }
             })
@@ -85,6 +87,19 @@ const FavoritesCentral = () => {
         }
     }, [nameToSearch, optionSelected])
 
+    useEffect(() => {
+        if(sessionStorage.getItem('userId')){
+          setUserIdValue(Number(sessionStorage.getItem('userId')))
+        }
+      }, [sessionStorage.getItem('userId')])
+
+    useEffect(() => {
+        if(userIdValue){
+            GetUserFavoriteProducts()
+            GetUserFavoriteLocations()
+        }
+    }, [userIdValue])
+
     return(
         <>
             <PageWrapper>
@@ -97,21 +112,29 @@ const FavoritesCentral = () => {
                 <FormControl>
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
-                        defaultValue="Estabelecimentos"
+                        defaultValue="Produtos"
                         name="radio-buttons-group"
                     >
-                        <FormControlLabel value="Estabelecimentos" control={<Radio onChange={() => setOptionsSelected(1)}/>} label="Estabelecimentos" />
                         <FormControlLabel value="Produtos" control={<Radio onChange={() => setOptionsSelected(2)}/>} label="Produtos" />
+                        <FormControlLabel value="Estabelecimentos" control={<Radio onChange={() => setOptionsSelected(1)}/>} label="Estabelecimentos" />
                     </RadioGroup>
                 </FormControl>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', width: '100%' }}>
-                    <S.TypographyComponent fontPeso={'600'} tamanho={'1.2rem'}>Meus {optionSelected == 1 ? "Lugares" : "Produtos"} Favoritos:</S.TypographyComponent>
+                    {!favoriteProducts?.length && optionSelected == 2 ?  <S.TypographyComponent fontPeso={'600'} tamanho={'1.2rem'}>Você não tem itens favoritados</S.TypographyComponent>:  <S.TypographyComponent fontPeso={'600'} tamanho={'1.2rem'}>Meus {optionSelected == 1 ? "Lugares" : "Produtos"} Favoritos:</S.TypographyComponent>}
                     <S.LocationContainer>
                         {optionSelected == 1 ? 
                             <>
                                 {!!favoriteLocations?.length && <>
                                     {favoriteLocations.map((loc, index) => {
-                                        return(<LocationCard imgUrl={loc.url} localName={loc.name} location={loc.endereco} ratingValue={loc.rating} key={index}  handleClickViewMore={() => navigate(`/estabelecimentos/${loc.pk_id}`)}/>)
+                                        return(
+                                            <LocationCard 
+                                                imgUrl={loc.cFoto} 
+                                                localName={loc.cNome} 
+                                                location={loc.cEndereco} 
+                                                ratingValue={loc.nNota} 
+                                                key={index}  
+                                                handleClickViewMore={() => navigate(`/estabelecimentos/${loc.cNome}/${loc.cEndereco}/${loc.nNota}/${encodeURIComponent(loc.cFoto)}/${loc?.id}`)}
+                                            />)
                                     })}
                             </>
                         }
@@ -121,7 +144,13 @@ const FavoritesCentral = () => {
                                 <>
                                     {favoriteProducts.map((prod, index) => {
                                         return(
-                                            <ProductCard key={index} productImg={prod.img_url} sectionName={prod.section} productPrice={prod.price}/>
+                                            <ProductCard 
+                                                key={index} 
+                                                productImg={prod.cFoto} 
+                                                sectionName={prod.cTitulo} 
+                                                productPrice={prod.nPreco}
+                                                handleClick={() => navigate(`/produtos/${prod?.cTitulo}/${prod?.nPreco}/${encodeURIComponent(prod?.cFoto)}/${prod?.iAnuncianteId}/${prod?.cDescricao}/${prod?.id}`)}
+                                            />
                                         )
                                     })}
                                 </>

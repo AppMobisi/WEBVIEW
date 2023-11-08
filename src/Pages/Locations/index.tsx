@@ -1,16 +1,18 @@
 import {useState, useEffect} from 'react'
 import * as S from './style'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { PageWrapper } from '../Home/styles'
 import { TopBar } from '../../Components/TopBar'
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
 
 import { LocationCard } from '../../Components/LocationCard'
-import { locations } from './mock'
+
+import { GetUserNearLocations } from '../../Services/functions'
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+
+interface IPhotosProps{
+  photo_reference: string
+}
 
 interface ILocationsProps{
     url: string
@@ -18,67 +20,38 @@ interface ILocationsProps{
     endereco: string
     rating: number
     pk_id: number
+    vicinity: string
+    photos: IPhotosProps[]
 }
 
 const Locations = () => {
+    const {coordX, coordY} = useParams()
     const [nameToSearch, setNameToSearch] = useState<string>()
     const [optionsListed, setOptionsListed] = useState<ILocationsProps[]>([])
 
-    const [optionSelected, setOptionSelected] = useState(1)
-
-    const [foodLocations, setFoodLocations] = useState<ILocationsProps[]>([])
-    const [originalFoodLocations, setOriginalFoodLocations] = useState<ILocationsProps[]>([])
-
-    const [leisureLocations, setLeisureLocations] = useState<ILocationsProps[]>([])
-    const [originalLeisureLocations, setOriginalLeisureLocations] = useState<ILocationsProps[]>([])
+    const [latitude, setLatitutde] = useState<number>(0)
+    const [longitude, setLongitude] = useState<number>(0)
 
     const [othersLocations, setOthersLocations] = useState<ILocationsProps[]>([])
     const [originalOthersLocations, setOriginalOthersLocations] = useState<ILocationsProps[]>([])
 
     const navigate = useNavigate()
 
-    useEffect(() => {
-      if(locations?.length > 0){
-        setFoodLocations(locations)
-        setOriginalFoodLocations(locations)
-        setLeisureLocations(locations)
-        setOriginalLeisureLocations(locations)
-        setOthersLocations(locations)
-        setOriginalOthersLocations(locations)
-      }
-    }, [locations])
+    const GetUserLocations = async () => {
+      const response = await GetUserNearLocations(latitude, longitude, 5000)
+      setOthersLocations(response?.data?.data)
+      setOriginalOthersLocations(response?.data?.data)
+    }
 
     useEffect(() => {
-      if(optionSelected == 1 && foodLocations?.length > 0){
-        setOptionsListed(foodLocations)
-      }
-
-      if(optionSelected && leisureLocations?.length > 0){
-        setOptionsListed(leisureLocations)
-      }
-
-      if(optionSelected == 3 && othersLocations?.length > 0){
+      if(othersLocations?.length > 0){
         setOptionsListed(othersLocations)
       }
-    }, [optionSelected, foodLocations, leisureLocations, othersLocations])
+    }, [othersLocations])
 
     useEffect(() => {
         if(nameToSearch?.length){
-            let foodLocationsList: ILocationsProps[] = []
-            let leisureLocationsList: ILocationsProps[] = []
             let othersLocationsList: ILocationsProps[] = []
-
-            foodLocations?.map((locat) => {
-              if(locat.name.toLowerCase().includes(nameToSearch.toLowerCase())){
-                foodLocationsList.push(locat)
-              }
-            })
-
-            leisureLocations?.map((locat) => {
-              if(locat.name.toLowerCase().includes(nameToSearch.toLowerCase())){
-                  leisureLocationsList.push(locat)
-              }
-            })
 
             othersLocations?.map((locat) => {
               if(locat.name.toLowerCase().includes(nameToSearch.toLowerCase())){
@@ -86,17 +59,45 @@ const Locations = () => {
               }
             })
 
-            setFoodLocations(foodLocationsList)
-            setLeisureLocations(leisureLocationsList)
             setOthersLocations(othersLocationsList)
         }
 
         if(nameToSearch == ''){
-            setFoodLocations(originalFoodLocations)
-            setLeisureLocations(originalLeisureLocations)
             setOthersLocations(originalOthersLocations)
         }
     }, [nameToSearch])
+
+    useEffect(() => {
+      if(coordX){
+        setLongitude(Number(coordX))
+      }
+
+      if(coordY){
+        setLatitutde(Number(coordY))
+      }
+    }, [coordX, coordY])
+
+    useEffect(() => {
+      if(longitude && latitude){
+        GetUserLocations()
+      }
+    }, [latitude, longitude])
+
+    // useEffect(() => {
+    //   if ("geolocation" in navigator) {
+    //     navigator.geolocation.getCurrentPosition((position) => {
+    //       const { latitude, longitude } = position.coords;
+    //       setLatitutde(latitude)
+    //       setLongitude(longitude)
+    //       console.log("Latitude:", latitude);
+    //       console.log("Longitude:", longitude);
+    //     }, (error) => {
+    //       console.error("Erro ao obter a localização:", error);
+    //     });
+    //   } else {
+    //     console.error("Geolocalização não é suportada neste navegador.");
+    //   }
+    // }, []);
 
     return(
         <>
@@ -107,32 +108,21 @@ const Locations = () => {
                     <S.SearchInput placeholder='Pesquisar...' onChange={(e) => setNameToSearch(e.target.value)}/>
                     <S.IconSearch />
                 </S.SearchContainer>
-                <FormControl>
-                    <RadioGroup
-                        aria-labelledby="demo-radio-buttons-group-label"
-                        defaultValue="Alimentacao"
-                        name="radio-buttons-group"
-                    >
-                        <FormControlLabel value="Alimentacao" control={<Radio onChange={() => setOptionSelected(1)}/>} label="Alimentação" />
-                        <FormControlLabel value="Lazer" control={<Radio onChange={() => setOptionSelected(2)}/>} label="Lazer" />
-                        <FormControlLabel value="Outros" control={<Radio onChange={() => setOptionSelected(3)}/>} label="Outros" />
-                    </RadioGroup>
-                </FormControl>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', width: '100%' }}>
-                    <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>{optionSelected == 1 ? "Alimentação:" : optionSelected == 2 ? "Lazer:" : "Outros:"}</S.Subtitle>
                     <S.LocationContainer>
-                      {optionsListed.map((imageUrl) => {
+                      {optionsListed?.length > 0 ? optionsListed.map((imageUrl) => {
                         return (
                               <LocationCard 
                                 imgUrl={imageUrl.url} 
                                 localName={imageUrl.name} 
-                                location={imageUrl.endereco} 
+                                location={imageUrl.vicinity} 
                                 ratingValue={imageUrl.rating} 
-                                key={imageUrl.pk_id}
-                                handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.pk_id}`)}
+                                key={imageUrl.name}
+                                handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.name}/${imageUrl.vicinity}/${imageUrl.rating}/${imageUrl?.photos?.length > 0 ? imageUrl?.photos[0]?.photo_reference : 0}/0`)}
                               />
                         );
-                        })}
+                        }): <HourglassTopIcon sx={{ fontSize: '6rem', margin: '6rem 0 0 0', color: '#001489' }}/>}
+                      {}
                     </S.LocationContainer>
                 </div>
             </PageWrapper>        
