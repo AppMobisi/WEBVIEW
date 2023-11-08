@@ -55,4 +55,13 @@ const GetUserNearLocations = async (latitude: number, longitude: number, raio: n
     }
 }
 
-export {GetProducts, GetUserById, FavoriteProduct, GetFavoriteProducts, DeleteFavoriteProduct, GetUserNearLocations}
+const GetLocationImage = async (photoReference: string) => {
+    try{
+        const response = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?placeId=${photoReference}&key=AIzaSyBzAGAGzBzvVwTKsKwAtI76Hjfp-lZQ3uo`)
+        return response
+    } catch (error){
+        return null
+    }
+}
+
+export {GetProducts, GetUserById, FavoriteProduct, GetFavoriteProducts, DeleteFavoriteProduct, GetUserNearLocations, GetLocationImage}

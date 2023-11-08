@@ -10,12 +10,18 @@ import { LocationCard } from '../../Components/LocationCard'
 import { GetUserNearLocations } from '../../Services/functions'
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 
+interface IPhotosProps{
+  photo_reference: string
+}
+
 interface ILocationsProps{
     url: string
     name: string
     endereco: string
     rating: number
     pk_id: number
+    vicinity: string
+    photos: IPhotosProps[]
 }
 
 const Locations = () => {
@@ -109,10 +115,10 @@ const Locations = () => {
                               <LocationCard 
                                 imgUrl={imageUrl.url} 
                                 localName={imageUrl.name} 
-                                location={imageUrl.endereco} 
+                                location={imageUrl.vicinity} 
                                 ratingValue={imageUrl.rating} 
                                 key={imageUrl.name}
-                                handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.pk_id}`)}
+                                handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.name}/${imageUrl.vicinity}/${imageUrl.rating}/${imageUrl?.photos[0]?.photo_reference}`)}
                               />
                         );
                         }): <HourglassTopIcon sx={{ fontSize: '6rem', margin: '6rem 0 0 0', color: '#001489' }}/>}
