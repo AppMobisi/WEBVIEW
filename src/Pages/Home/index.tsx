@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import * as S from './styles'
 import { TopBar } from '../../Components/TopBar'
 import { MenuSectionCard } from '../../Components/MenuSectionCard'
-import { LocationCard } from '../../Components/LocationCard'
 import { ProductCard } from '../../Components/ProductCard'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -11,8 +10,6 @@ import { GetProducts, GetUserById } from "../../Services/functions"
 
 import classificationIcon from '../../Assets/classificationIcon.png'
 import storeIcon from '../../Assets/storeIcon.png'
-
-import {sliderImageUrl } from './mock'
 
 interface IProductsListProps {
   cFoto: string
@@ -87,34 +84,6 @@ const Home = () => {
                 </S.TitleAndSubtitleContainer>
                 <MenuSectionCard image={classificationIcon} text='Favoritos' urlToNavigate='/central-favoritos'/>
                 <MenuSectionCard image={storeIcon} text='Loja' urlToNavigate='/produtos'/>
-                <S.CarouselContainer>
-                  <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Lugares para você:</S.Subtitle>
-                  <Carousel
-                      responsive={responsive}
-                      autoPlay={true}
-                      swipeable={true}
-                      draggable={true}
-                      showDots={false}
-                      arrows={false}
-                      infinite={true}
-                      partialVisible={false}
-                      dotListClass="custom-dot-list-style"
-                  >
-                      {sliderImageUrl.map((imageUrl, index) => {
-                      return (
-                          <div className="slider" key={index} style={{ padding: '0.5rem 0.8rem'}}>
-                            <LocationCard 
-                              imgUrl={imageUrl.url} 
-                              localName={imageUrl.name} 
-                              location={imageUrl.endereco} 
-                              ratingValue={imageUrl.rating} 
-                              handleClickViewMore={() => navigate(`/estabelecimentos/${imageUrl.pk_id}`)}
-                            />
-                          </div>
-                      );
-                      })}
-                  </Carousel>
-                </S.CarouselContainer>
                 {productsList?.length > 0 && 
                   <S.CarouselContainer>
                     <S.Subtitle fontWeight={'600'} fontSize='1.5rem'>Produtos:</S.Subtitle>
